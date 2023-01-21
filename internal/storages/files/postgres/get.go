@@ -1,0 +1,60 @@
+package postgres
+
+import (
+	"errors"
+	"fmt"
+
+	"gorm.io/gorm"
+
+	"github.com/mantyr/karma8-http-file-storage-service/internal/id"
+	"github.com/mantyr/karma8-http-file-storage-service/internal/storages"
+	"github.com/mantyr/karma8-http-file-storage-service/internal/storages/files"
+)
+
+// Get возвращает информацию о файле
+func (s *Storage) Get(
+	namespaceID id.NamespaceID,
+	fileID id.FileID,
+) (
+	*files.File,
+	error,
+) {
+	switch {
+	case namespaceID.IsZero():
+		return nil, errors.New("empty namespace_id")
+	case fileID.IsZero():
+		return nil, errors.New("empty file_id")
+	}
+	item := &File{}
+	err := s.db.Where(
+		`
+			namespace_id = ?
+			AND file_id = ?
+		`,
+		namespaceID,
+		fileID,
+	).First(item).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, storages.NewNotFound(
+				fmt.Errorf(
+					"file not found (namespace_id=%s, file_id=%s)",
+					namespaceID.String(),
+					fileID.String(),
+				),
+			)
+		}
+		return nil, err
+	}
+	result := &files.File{
+		NamespaceID:  item.NamespaceID,
+		FileID:       item.FileID,
+		Servers:      item.Servers,
+		Enabled:      item.Enabled,
+		Creator:      id.Subject{ID: item.CreatorID, Type: item.CreatorType},
+		Updater:      id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},
+		CreatedAt:    item.CreatedAt,
+		UpdatedAt:    item.UpdatedAt,
+	}
+	return result, nil
+}
