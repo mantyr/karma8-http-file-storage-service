@@ -51,7 +51,7 @@ karma8 gw --config=./config.yml
 ##### Команда для получения справки
 
 ```bash
-karma gw --help
+karma8 gw --help
 ```
 
 ##### Правила разделения данных по нескольким серверам
@@ -81,7 +81,7 @@ karma8 discovery --config=./config.yml
 ##### Команда для получения справки
 
 ```bash
-karma discovery --help
+karma8 discovery --help
 ```
 
 #### karma8 storage
@@ -99,7 +99,7 @@ karma8 storage --config=./config.yml
 ##### Команда для получения справки
 
 ```bash
-karma storage --help
+karma8 storage --help
 ```
 
 ## Author
