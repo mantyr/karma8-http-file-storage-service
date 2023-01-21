@@ -35,10 +35,10 @@ func (s *Server) Check() error {
 	switch {
 	case s.ServerID.IsZero():
 		return errors.New("empty server id")
-	case s.CreatedAt.IsZero():
-		return errors.New("empty server created_at")
-	case s.UpdatedAt.IsZero():
-		return errors.New("empty server updated_at")
+	case s.Host == "":
+		return errors.New("empty server host")
+	case s.Port < 1:
+		return errors.New("empty server port")
 	}
 	err := s.Creator.Check()
 	if err != nil {
