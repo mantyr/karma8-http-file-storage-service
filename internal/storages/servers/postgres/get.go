@@ -19,7 +19,7 @@ func (s *Storage) Get(
 	error,
 ) {
 	if serverID.IsZero() {
-		return nil, errors.New("empty server_id")
+		return nil, errors.New("empty serverID")
 	}
 	item := &Server{}
 	err := s.db.Where(
@@ -30,7 +30,7 @@ func (s *Storage) Get(
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, storages.NewNotFound(
 				fmt.Errorf(
-					"server not found (server_id=%s)",
+					"server not found (%s)",
 					serverID.String(),
 				),
 			)

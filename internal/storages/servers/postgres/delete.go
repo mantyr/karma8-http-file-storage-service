@@ -14,7 +14,7 @@ func (s *Storage) Delete(
 	updater id.Subject,
 ) error {
 	if serverID.IsZero() {
-		return errors.New("empty server_id")
+		return errors.New("empty serverID")
 	}
 	if err := updater.Check(); err != nil {
 		return fmt.Errorf("bad updater subject: %v", err.Error())
@@ -29,7 +29,7 @@ func (s *Storage) Delete(
 	if result.RowsAffected < 1 {
 		return storages.NewNotFound(
 			fmt.Errorf(
-				"delete server error: server not found (serverid=%s)",
+				"delete server error: server not found (%s)",
 				serverID.String(),
 			),
 		)

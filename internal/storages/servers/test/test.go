@@ -100,7 +100,7 @@ func Run(t *testing.T, st servers.Storage) {
 		So(err, ShouldNotBeNil)
 		So(storages.CheckNotFound(err), ShouldEqual, true)
 		So(storages.CheckExists(err), ShouldEqual, false)
-		So(err.Error(), ShouldEqual, "delete server error: server not found")
+		So(err.Error(), ShouldEqual, fmt.Sprintf("delete server error: server not found (%s)", serverID.String()))
 	})
 	Convey("Проверяем что нельзя удалить сервер по пустому идентификатору", func() {
 		err := st.Delete(id.ServerID{}, id.Subject{ID: updaterID, Type: subjects.User})

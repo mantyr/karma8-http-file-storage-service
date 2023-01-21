@@ -9,9 +9,18 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  DB_TYPE:     postgres
+  DB_HOST:     postgres
+  DB_PORT:     5432
+  DB_NAME:     karma8
+  DB_USER:     postgres
+  DB_PASSWORD: postgres
+  DB_SCHEMA:   public
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: mantyr/golang-builder@v1.19
     steps:
     - uses: actions/checkout@v3
 
@@ -19,6 +28,9 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: 1.19
+
+    - name: Migrate database
+      run: sql-migrate up
 
     - name: Build
       run: go build -v ./...
@@ -29,6 +41,8 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_DB:       karma8
+          POSTGRES_USER:     postgres
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432

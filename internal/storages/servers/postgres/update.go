@@ -16,7 +16,7 @@ func (s *Storage) update(
 ) error {
 	switch {
 	case serverID.IsZero():
-		return errors.New("empty server_id")
+		return errors.New("empty serverID")
 	case params == nil:
 		return errors.New("empty params")
 	case len(params) == 0:
@@ -42,7 +42,7 @@ func (s *Storage) update(
 	if result.RowsAffected < 1 {
 		return storages.NewNotFound(
 			fmt.Errorf(
-				"update server error: server not found (server_id=%s)",
+				"update server error: server not found (%s)",
 				serverID.String(),
 			),
 		)

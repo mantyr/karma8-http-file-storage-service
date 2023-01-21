@@ -1,0 +1,6 @@
+development:
+  dialect: postgres
+  datasource: host=$POSTGRES_HOST port=$POSTGRES_PORT dbname=$POSTGRES_DB user=$POSTGRES_USER password=$POSTGRES_PASSWORD sslmode=disable
+  schema: public
+  dir: migrations
+  table: migrations
