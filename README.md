@@ -28,7 +28,7 @@
 
 ### Архитектурный скетч
 
-![karma8-http-file-storate-service-v1.drawio.svg](doc/karma8-http-file-storate-service-v1.drawio.svg "Общая схема взаимодействия сервисов и компонентов")
+![karma8-http-file-storate-service-v1.drawio.svg](docs/karma8-http-file-storate-service-v1.drawio.svg "Общая схема взаимодействия сервисов и компонентов")
 
 ## Author
 
