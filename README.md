@@ -2,7 +2,7 @@
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
-Решение тестового задания.
+Решение тестового задания. [В процессе разработки]
 
 ## Задача
 
