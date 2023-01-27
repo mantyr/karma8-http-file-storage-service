@@ -11,6 +11,8 @@ import (
 	grpc_logrus "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_xrequest_id "github.com/higebu/go-grpc-interceptor/xrequestid"
+
+	"github.com/mantyr/karma8-http-file-storage-service/internal/constant"
 )
 
 type GRPC struct {
@@ -53,7 +55,7 @@ func (s *GRPC) Init(ctx *cli.Context) error {
 }
 
 func (s *GRPC) Start(ctx *cli.Context) error {
-	address := ctx.String("grpc.host") + ":" + ctx.String("grpc.port")
+	address := ctx.String(constant.GRPCHostFlag) + ":" + ctx.String(constant.GRPCPortFlag)
 	log.Printf("Config GRPC: %v", address)
 
 	l, err := net.Listen("tcp", address)

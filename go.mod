@@ -2,9 +2,16 @@ module github.com/mantyr/karma8-http-file-storage-service
 
 go 1.19
 
+replace github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery v0.0.0 => ./api/karma8-discovery
+
+replace github.com/mantyr/karma8-http-file-storage-service/api/karma8-storage v0.0.0 => ./api/karma8-storage
+
 require (
 	github.com/caarlos0/env/v6 v6.10.1
+	github.com/google/uuid v1.3.0
 	github.com/lib/pq v1.10.7
+	github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery v0.0.0
+	github.com/mantyr/karma8-http-file-storage-service/api/karma8-storage v0.0.0
 	github.com/sirupsen/logrus v1.9.0
 	gorm.io/driver/postgres v1.4.6
 	gorm.io/gorm v1.24.3
@@ -19,8 +26,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
-	github.com/golang/protobuf v1.5.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/higebu/go-grpc-interceptor v1.0.3 // indirect
@@ -48,8 +54,8 @@ require (
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
-	google.golang.org/genproto v0.0.0-20200423170343-7949de9c1215 // indirect
-	google.golang.org/grpc v1.30.0 // indirect
+	google.golang.org/genproto v0.0.0-20221207170731-23e4bf6bdc37 // indirect
+	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
