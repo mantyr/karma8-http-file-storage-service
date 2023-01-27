@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package karma8.discovery.namespaces.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "karma8-discovery/namespaces/namespace.proto";
+import "karma8-discovery/subjects/subject.proto";
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/namespaces";
+
+service NamespaceService {
+  // Add добавляет информацию о новом пространстве для хранения файлов
+  rpc Add(AddRequest) returns (AddResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/namespaces"
+      body: "*"
+    };
+  }
+  // List возвращает список всех зарегистрированных пространств
+  rpc List(ListRequest) returns (ListResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/namespaces"
+    };
+  }
+  // Get возвращает информацию о пространстве с файлами
+  rpc Get(GetRequest) returns (GetResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/namespaces/{namespace_id}"
+    };
+  }
+  // Enable включает доступность пространства для использования
+  rpc Enable(EnableRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/namespaces/{namespace_id}/enable"
+    };
+  }
+  // Disable отключает доступность пространства для использования
+  rpc Disable(DisableRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/namespaces/{namespace_id}/disable"
+    };
+  }
+  // Delete удаляет информацию о пространстве
+  rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/namespaces/{namespace_id}"
+    };
+  }
+}
+
+// AddRequest это запрос на добавление информации о новом пространстве для хранения файлов
+message AddRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // Enabled это флаг указывающий что пространство доступно для использования
+  bool enabled = 2;
+
+  // Creator это информация о субъекте который создал запись
+  karma8.discovery.subjects.v1.Subject creator = 3;
+}
+
+// AddResponse это ответ на запрос на добавление информации о новом пространстве
+message AddResponse {}
+
+// ListRequest это запрос всех зарегистрированных пространств
+message ListRequest {}
+
+// ListResponse это ответ на запрос всех зарегистрированных пространств
+message ListResponse {
+  repeated Namespace namespaces = 1;
+}
+
+// GetRequest это запрос на получение информации о пространстве
+message GetRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+}
+
+// GerResponse это ответ на запрос на получение информации о пространстве
+message GetResponse {
+  // Namespace это информация о пространстве
+  Namespace namespace  = 1;
+}
+
+// EnableRequest это запрос на включение доступности ранее выключенного пространства
+message EnableRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 2;
+}
+
+// DisableRequest это запрос на выключение доступности пространства
+message DisableRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 2;
+}
+
+// DeleteRequest это запрос на удаление информации о пространстве
+message DeleteRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 2;
+}

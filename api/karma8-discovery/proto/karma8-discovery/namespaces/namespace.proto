@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package karma8.discovery.namespaces.v1;
+
+import "google/protobuf/timestamp.proto";
+import "karma8-discovery/subjects/subject.proto";
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/namespaces";
+
+// Namespace это информация о пространстве с файлами
+message Namespace {
+  // NamespaceID это идентификатор пространства с файлами
+  string namespace_id = 1;
+
+  // Enabled это флаг отвечающий за доступность файлов в пространстве для использования
+  bool enabled = 2;
+
+  // Creator это информация о субъекте который создал запись
+  karma8.discovery.subjects.v1.Subject creator = 3;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 4;
+
+  // CreatedAt это дата создания записи
+  google.protobuf.Timestamp created_at = 5;
+
+  // UpdatedAt это дата обновления записи
+  google.protobuf.Timestamp updated_at = 6;
+}

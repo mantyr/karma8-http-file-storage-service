@@ -16,10 +16,15 @@ func (s *Storage) List() (
 	}
 	var result []files.File
 	for _, item := range items {
+		servers, err := item.GetServers()
+		if err != nil {
+			return nil, err
+		}
 		arr := files.File{
 			NamespaceID:  item.NamespaceID,
 			FileID:       item.FileID,
-			Servers:      item.Servers,
+			Name:         item.Name,
+			Servers:      servers,
 			Enabled:      item.Enabled,
 			Creator:      id.Subject{ID: item.CreatorID, Type: item.CreatorType},
 			Updater:      id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},

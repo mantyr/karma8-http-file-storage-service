@@ -16,9 +16,9 @@ func (s *Storage) Delete(
 ) error {
 	switch {
 	case namespaceID.IsZero():
-		return errors.New("empty namespace_id")
+		return errors.New("empty namespaceID")
 	case fileID.IsZero():
-		return errors.New("empty file_id")
+		return errors.New("empty fileID")
 	}
 	if err := updater.Check(); err != nil {
 		return fmt.Errorf("bad updater subject: %v", err.Error())

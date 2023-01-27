@@ -19,7 +19,7 @@ func (s *Storage) Get(
 	error,
 ) {
 	if namespaceID.IsZero() {
-		return nil, errors.New("empty namespace_id")
+		return nil, errors.New("empty namespaceID")
 	}
 	item := &Namespace{}
 	err := s.db.Where(
@@ -30,7 +30,7 @@ func (s *Storage) Get(
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, storages.NewNotFound(
 				fmt.Errorf(
-					"namespace not found (namespace_id=%s)",
+					"namespace not found (%s)",
 					namespaceID.String(),
 				),
 			)

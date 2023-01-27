@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package karma8.storage.files.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-storage/files";
+
+service FileService {
+  rpc Writer(stream WriterRequest) returns (WriterResponse) {}
+  rpc Reader(ReaderRequest) returns (stream ReaderResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/namespaces/{namespace_id}/files/{file_id}"
+    };
+  }
+}
+
+message WriterRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+
+  // Data это данные для последовательной записи в файл
+  bytes data = 4;
+}
+
+message WriterResponse {}
+
+message ReaderRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+}
+
+message ReaderResponse {
+  // Data это данные для последовательного чтения из файла
+  bytes data = 1;
+}

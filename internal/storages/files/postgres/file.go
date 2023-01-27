@@ -3,6 +3,8 @@ package postgres
 import (
 	"time"
 
+	"github.com/lib/pq"
+
 	"github.com/mantyr/karma8-http-file-storage-service/internal/id"
 	"github.com/mantyr/karma8-http-file-storage-service/internal/id/subjects"
 )
@@ -15,8 +17,11 @@ type File struct {
 	// FileID это идентификатор файла внутри пространства с файлами
 	FileID id.FileID `gorm:"column:file_id"`
 
+	// Name это название файла в рамках окружения
+	Name string `gorm:"column:file_name"`
+
 	// Servers это перечень серверов на которых хранятся части файла
-	Servers []id.ServerID `gorm:"column:servers"`
+	Servers pq.StringArray `gorm:"column:servers;type:varchar(1000)[]"`
 
 	// Enabled это общий выключатель файла для всех
 	Enabled bool `gorm:"column:enabled"`
@@ -43,4 +48,24 @@ type File struct {
 // TableName это реализация интерфейса gorm.Tabler
 func (f *File) TableName() string {
 	return "files"
+}
+
+func (f *File) SetServers(servers []id.ServerID) {
+	var items []string
+	for _, server := range servers {
+		items = append(items, server.String())
+	}
+	f.Servers = items
+}
+
+func (f *File) GetServers() ([]id.ServerID, error) {
+	var items []id.ServerID
+	for _, serverID := range f.Servers {
+		item, err := id.ParseServerID(serverID)
+		if err != nil {
+			return []id.ServerID{}, err
+		}
+		items = append(items, item)
+	}
+	return items, nil
 }

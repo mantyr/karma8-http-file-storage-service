@@ -29,13 +29,8 @@ type Namespace struct {
 }
 
 func (n *Namespace) Check() error {
-	switch {
-	case n.NamespaceID.IsZero():
+	if n.NamespaceID.IsZero() {
 		return errors.New("empty namespace id")
-	case n.CreatedAt.IsZero():
-		return errors.New("empty namespace created_at")
-	case n.UpdatedAt.IsZero():
-		return errors.New("empty namespace updated_at")
 	}
 	err := n.Creator.Check()
 	if err != nil {

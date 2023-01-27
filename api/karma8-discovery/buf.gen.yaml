@@ -1,0 +1,14 @@
+version: v1
+plugins:
+  - name: go
+    out: .
+    opt: paths=source_relative
+
+  - name: go-grpc
+    out: .
+    opt: paths=source_relative,require_unimplemented_servers=false
+
+  - name: openapiv2
+    out: .
+    opt: logtostderr=true,allow_merge=true,json_names_for_fields=false,openapi_naming_strategy=fqn,merge_file_name=karma8-discovery
+    strategy: all

@@ -15,6 +15,9 @@ type File struct {
 	// FileID это идентификатор файла в рамках пространства
 	FileID id.FileID
 
+	// Name это название файла в рамках окружения
+	Name string
+
 	// Enabled означает доступен ли файл для использования
 	Enabled bool
 
@@ -40,10 +43,8 @@ func (f *File) Check() error {
 		return errors.New("empty file namespace id")
 	case f.FileID.IsZero():
 		return errors.New("empty file id")
-	case f.CreatedAt.IsZero():
-		return errors.New("empty file created_at")
-	case f.UpdatedAt.IsZero():
-		return errors.New("empty file updated_at")
+	case f.Name == "":
+		return errors.New("empty file name")
 	case len(f.Servers) < 1:
 		return errors.New("empty file servers")
 	}

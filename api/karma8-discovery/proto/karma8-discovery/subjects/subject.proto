@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package karma8.discovery.subjects.v1;
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/subjects";
+
+// Type это тип субъекта
+enum Type {
+  // TypeUnspecified это неизвестный тип субъекта
+  TYPE_UNSPECIFIED = 0;
+
+  // TypeServiceAccount это сервисный аккаунт
+  TYPE_SERVICE_ACCOUNT = 1;
+
+  // TypeUser это пользователь
+  TYPE_USER = 2;
+}
+
+// Subject это информация о субъекте
+message Subject {
+  // SubjectID это идентификатор субъекта
+  string subject_id = 1;
+
+  // SubjectType это тип субъекта
+  Type subject_type = 2;
+}

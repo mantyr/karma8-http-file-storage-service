@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package karma8.discovery.servers.v1;
+
+import "google/protobuf/timestamp.proto";
+import "karma8-discovery/subjects/subject.proto";
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/servers";
+
+// Server это информация о сервере
+message Server {
+  // ServerID это идентификатор сервера
+  string server_id = 1;
+
+  // Host это адрес по которому отвечает сервер
+  string host = 2;
+
+  // Port это порт по которому отвечает сервер
+  int32 port = 3;
+
+  // Creator это информация о субъекте который создал запись
+  karma8.discovery.subjects.v1.Subject creator = 4;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 5;
+
+  // CreatedAt это дата создания записи
+  google.protobuf.Timestamp created_at = 6;
+
+  // UpdatedAt это дата обновления записи
+  google.protobuf.Timestamp updated_at = 7;
+}

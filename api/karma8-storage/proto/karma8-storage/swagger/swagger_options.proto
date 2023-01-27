@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package karma8.storage.swagger.v1;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-storage/swagger";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Karma8 Storage API"
+    version: "%version%"
+    contact: {
+      name: "Oleg Shevelev"
+      email: "mantyr@gmail.com"
+    }
+  }
+};

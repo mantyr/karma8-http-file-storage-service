@@ -21,9 +21,9 @@ func (s *Storage) Get(
 ) {
 	switch {
 	case namespaceID.IsZero():
-		return nil, errors.New("empty namespace_id")
+		return nil, errors.New("empty namespaceID")
 	case fileID.IsZero():
-		return nil, errors.New("empty file_id")
+		return nil, errors.New("empty fileID")
 	}
 	item := &File{}
 	err := s.db.Where(
@@ -46,10 +46,15 @@ func (s *Storage) Get(
 		}
 		return nil, err
 	}
+	servers, err := item.GetServers()
+	if err != nil {
+		return nil, err
+	}
 	result := &files.File{
 		NamespaceID:  item.NamespaceID,
 		FileID:       item.FileID,
-		Servers:      item.Servers,
+		Name:         item.Name,
+		Servers:      servers,
 		Enabled:      item.Enabled,
 		Creator:      id.Subject{ID: item.CreatorID, Type: item.CreatorType},
 		Updater:      id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},

@@ -14,7 +14,7 @@ func (s *Storage) Delete(
 	updater id.Subject,
 ) error {
 	if namespaceID.IsZero() {
-		return errors.New("empty namespace_id")
+		return errors.New("empty namespaceID")
 	}
 	if err := updater.Check(); err != nil {
 		return fmt.Errorf("bad updater subject: %v", err.Error())
@@ -29,7 +29,7 @@ func (s *Storage) Delete(
 	if result.RowsAffected < 1 {
 		return storages.NewNotFound(
 			fmt.Errorf(
-				"delete namespace error: namespace not found (namespace_id=%s)",
+				"delete namespace error: namespace not found (%s)",
 				namespaceID.String(),
 			),
 		)

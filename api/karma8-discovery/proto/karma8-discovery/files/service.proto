@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package karma8.discovery.files.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "karma8-discovery/files/file.proto";
+import "karma8-discovery/subjects/subject.proto";
+
+option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/files";
+
+service FileService {
+  // Add добавляет информацию о новом файле
+  rpc Add(AddRequest) returns (AddResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/files"
+      body: "*"
+    };
+  }
+  // List возвращает список всех зарегистрированных файлов
+  rpc List(ListRequest) returns (ListResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/files"
+    };
+  }
+  // Get возвращает информацию о файле
+  rpc Get(GetRequest) returns (GetResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/files/{file_id}"
+    };
+  }
+  // GetByFileName возвращает информацию о файле по названию
+  rpc GetByFileName(GetByFileNameRequest) returns (GetResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/files/get-by-name"
+    };
+  }
+  // Enable включает доступность файла для использования
+  rpc Enable(EnableRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/files/{file_id}/enable"
+    };
+  }
+  // Disable отключает доступность файла для использования
+  rpc Disable(DisableRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/files/{file_id}/disable"
+    };
+  }
+  // Delete удаляет информацию о файле
+  rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/files/{file_id}"
+    };
+  }
+}
+
+// AddRequest это запрос на добавление информации о новом файле
+message AddRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+
+  // Servers это перечень серверов на которых будут храниться части файла
+  repeated string servers = 3;
+
+  // Enabled это флаг указывающий что файл доступен для использования
+  bool enabled = 4;
+
+  // Creator это информация о субъекте который создал запись
+  karma8.discovery.subjects.v1.Subject creator = 5;
+}
+
+// AddResponse это ответ на запрос на добавление информации о новом файле
+message AddResponse {}
+
+// ListRequest это запрос всех зарегистрированных файлов
+message ListRequest {}
+
+// ListResponse это ответ на запрос всех зарегистрированных файлов
+message ListResponse {
+  repeated File files = 1;
+}
+
+// GetRequest это запрос на получение информации о файле
+message GetRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+}
+
+// GetByFileNameRequest это запрос на получение информации о файле по названию
+message GetByFileNameRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileName это название файла
+  string file_name = 2;
+}
+
+// GerResponse это ответ на запрос на получение информации о файле
+message GetResponse {
+  // File это информация о пространстве
+  File file = 1;
+}
+
+// EnableRequest это запрос на включение доступности ранее выключенного файла
+message EnableRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 3;
+}
+
+// DisableRequest это запрос на выключение доступности файла
+message DisableRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 3;
+}
+
+// DeleteRequest это запрос на удаление информации о файле
+message DeleteRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 3;
+}

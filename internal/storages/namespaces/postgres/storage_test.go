@@ -5,7 +5,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	driver "github.com/mantyr/karma8-http-file-storage-service/drivers/postgres"
+	driver "github.com/mantyr/karma8-http-file-storage-service/internal/drivers/postgres"
 	"github.com/mantyr/karma8-http-file-storage-service/internal/storages/namespaces/test"
 )
 

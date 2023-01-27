@@ -17,9 +17,9 @@ func (s *Storage) update(
 ) error {
 	switch {
 	case namespaceID.IsZero():
-		return errors.New("empty namespace_id")
+		return errors.New("empty namespaceID")
 	case fileID.IsZero():
-		return errors.New("empty file_id")
+		return errors.New("empty fileID")
 	case params == nil:
 		return errors.New("empty params")
 	case len(params) == 0:

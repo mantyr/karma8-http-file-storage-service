@@ -21,7 +21,7 @@ func (s *Storage) Add(file *files.File) error {
 	item := &File{
 		NamespaceID:  file.NamespaceID,
 		FileID:       file.FileID,
-		Servers:      file.Servers,
+		Name:         file.Name,
 		Enabled:      file.Enabled,
 		CreatorID:    file.Creator.ID,
 		CreatorType:  file.Creator.Type,
@@ -30,6 +30,7 @@ func (s *Storage) Add(file *files.File) error {
 		CreatedAt:    time.Now(),
 	}
 	item.UpdatedAt = item.CreatedAt
+	item.SetServers(file.Servers)
 	err = s.db.Create(item).Error
 	if driver.CheckDuplicate(err) {
 		return storages.NewExists(err)

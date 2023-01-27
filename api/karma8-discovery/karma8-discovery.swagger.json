@@ -1,0 +1,1163 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Karma8 Discovery API",
+    "version": "%version%",
+    "contact": {
+      "name": "Oleg Shevelev",
+      "email": "mantyr@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "FileService"
+    },
+    {
+      "name": "NamespaceService"
+    },
+    {
+      "name": "ServerService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/files": {
+      "get": {
+        "summary": "List возвращает список всех зарегистрированных файлов",
+        "operationId": "FileService_List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.files.v1.ListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "FileService"
+        ]
+      },
+      "post": {
+        "summary": "Add добавляет информацию о новом файле",
+        "operationId": "FileService_Add",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.files.v1.AddResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.files.v1.AddRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FileService"
+        ]
+      }
+    },
+    "/api/v1/files/get-by-name": {
+      "get": {
+        "summary": "GetByFileName возвращает информацию о файле по названию",
+        "operationId": "FileService_GetByFileName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.files.v1.GetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "file_name",
+            "description": "FileName это название файла",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileService"
+        ]
+      }
+    },
+    "/api/v1/files/{file_id}": {
+      "get": {
+        "summary": "Get возвращает информацию о файле",
+        "operationId": "FileService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.files.v1.GetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "FileID это идентификатор файла",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete удаляет информацию о файле",
+        "operationId": "FileService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "FileID это идентификатор файла",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "FileService"
+        ]
+      }
+    },
+    "/api/v1/files/{file_id}/disable": {
+      "put": {
+        "summary": "Disable отключает доступность файла для использования",
+        "operationId": "FileService_Disable",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "FileID это идентификатор файла",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "FileService"
+        ]
+      }
+    },
+    "/api/v1/files/{file_id}/enable": {
+      "put": {
+        "summary": "Enable включает доступность файла для использования",
+        "operationId": "FileService_Enable",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "FileID это идентификатор файла",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "FileService"
+        ]
+      }
+    },
+    "/api/v1/namespaces": {
+      "get": {
+        "summary": "List возвращает список всех зарегистрированных пространств",
+        "operationId": "NamespaceService_List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.namespaces.v1.ListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "NamespaceService"
+        ]
+      },
+      "post": {
+        "summary": "Add добавляет информацию о новом пространстве для хранения файлов",
+        "operationId": "NamespaceService_Add",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.namespaces.v1.AddResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.namespaces.v1.AddRequest"
+            }
+          }
+        ],
+        "tags": [
+          "NamespaceService"
+        ]
+      }
+    },
+    "/api/v1/namespaces/{namespace_id}": {
+      "get": {
+        "summary": "Get возвращает информацию о пространстве с файлами",
+        "operationId": "NamespaceService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.namespaces.v1.GetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "NamespaceService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete удаляет информацию о пространстве",
+        "operationId": "NamespaceService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "NamespaceService"
+        ]
+      }
+    },
+    "/api/v1/namespaces/{namespace_id}/disable": {
+      "put": {
+        "summary": "Disable отключает доступность пространства для использования",
+        "operationId": "NamespaceService_Disable",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "NamespaceService"
+        ]
+      }
+    },
+    "/api/v1/namespaces/{namespace_id}/enable": {
+      "put": {
+        "summary": "Enable включает доступность пространства для использования",
+        "operationId": "NamespaceService_Enable",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace_id",
+            "description": "NamespaceID это идентификатор пространства",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "NamespaceService"
+        ]
+      }
+    },
+    "/api/v1/servers": {
+      "get": {
+        "summary": "List возвращает список всех зарегистрированных серверов",
+        "operationId": "ServerService_List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.servers.v1.ListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "ServerService"
+        ]
+      },
+      "post": {
+        "summary": "Add добавляет информацию о новом сервере хранения файлов",
+        "operationId": "ServerService_Add",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.servers.v1.AddResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.servers.v1.AddRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ServerService"
+        ]
+      }
+    },
+    "/api/v1/servers/list-for-next-file": {
+      "get": {
+        "summary": "ListForNextFile возвращает список серверов, наиболее подходящих для хранения следующего файла",
+        "operationId": "ServerService_ListForNextFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.servers.v1.ListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "quantity",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "ServerService"
+        ]
+      }
+    },
+    "/api/v1/servers/{server_id}": {
+      "get": {
+        "summary": "Get возвращает информацию о сервере",
+        "operationId": "ServerService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/karma8.discovery.servers.v1.GetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "description": "ServerID это идентификатор сервера",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ServerService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete удаляет информацию о сервере",
+        "operationId": "ServerService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "description": "ServerID это идентификатор сервера",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "ServerService"
+        ]
+      }
+    },
+    "/api/v1/servers/{server_id}/disable": {
+      "put": {
+        "summary": "Disable отключает доступность сервера для использования",
+        "operationId": "ServerService_Disable",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "description": "ServerID это идентификатор сервера",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "ServerService"
+        ]
+      }
+    },
+    "/api/v1/servers/{server_id}/enable": {
+      "put": {
+        "summary": "Enable включает доступность сервера для использования",
+        "operationId": "ServerService_Enable",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "description": "ServerID это идентификатор сервера",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "ServerService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "karma8.discovery.files.v1.AddRequest": {
+      "type": "object",
+      "properties": {
+        "namespace_id": {
+          "type": "string",
+          "title": "NamespaceID это идентификатор пространства"
+        },
+        "file_id": {
+          "type": "string",
+          "title": "FileID это идентификатор файла"
+        },
+        "servers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Servers это перечень серверов на которых будут храниться части файла"
+        },
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled это флаг указывающий что файл доступен для использования"
+        },
+        "creator": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Creator это информация о субъекте который создал запись"
+        }
+      },
+      "title": "AddRequest это запрос на добавление информации о новом файле"
+    },
+    "karma8.discovery.files.v1.AddResponse": {
+      "type": "object",
+      "title": "AddResponse это ответ на запрос на добавление информации о новом файле"
+    },
+    "karma8.discovery.files.v1.File": {
+      "type": "object",
+      "properties": {
+        "namespace_id": {
+          "type": "string",
+          "title": "NamespaceID это идентификатор пространства с файлами"
+        },
+        "file_id": {
+          "type": "string",
+          "title": "FileID это идентификатор файла"
+        },
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled это флаг отвечающий за доступность файла для использования"
+        },
+        "servers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Servers это перечень серверов на которых хранятся части файла"
+        },
+        "creator": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Creator это информация о субъекте который создал запись"
+        },
+        "updater": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Updater это информация о субъекте который внёс последнии изменения в запись"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "CreatedAt это дата создания записи"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "UpdatedAt это дата обновления записи"
+        }
+      },
+      "title": "File это информация о пространстве с файлами"
+    },
+    "karma8.discovery.files.v1.GetResponse": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "$ref": "#/definitions/karma8.discovery.files.v1.File",
+          "title": "File это информация о пространстве"
+        }
+      },
+      "title": "GerResponse это ответ на запрос на получение информации о файле"
+    },
+    "karma8.discovery.files.v1.ListResponse": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/karma8.discovery.files.v1.File"
+          }
+        }
+      },
+      "title": "ListResponse это ответ на запрос всех зарегистрированных файлов"
+    },
+    "karma8.discovery.namespaces.v1.AddRequest": {
+      "type": "object",
+      "properties": {
+        "namespace_id": {
+          "type": "string",
+          "title": "NamespaceID это идентификатор пространства"
+        },
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled это флаг указывающий что пространство доступно для использования"
+        },
+        "creator": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Creator это информация о субъекте который создал запись"
+        }
+      },
+      "title": "AddRequest это запрос на добавление информации о новом пространстве для хранения файлов"
+    },
+    "karma8.discovery.namespaces.v1.AddResponse": {
+      "type": "object",
+      "title": "AddResponse это ответ на запрос на добавление информации о новом пространстве"
+    },
+    "karma8.discovery.namespaces.v1.GetResponse": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "$ref": "#/definitions/karma8.discovery.namespaces.v1.Namespace",
+          "title": "Namespace это информация о пространстве"
+        }
+      },
+      "title": "GerResponse это ответ на запрос на получение информации о пространстве"
+    },
+    "karma8.discovery.namespaces.v1.ListResponse": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/karma8.discovery.namespaces.v1.Namespace"
+          }
+        }
+      },
+      "title": "ListResponse это ответ на запрос всех зарегистрированных пространств"
+    },
+    "karma8.discovery.namespaces.v1.Namespace": {
+      "type": "object",
+      "properties": {
+        "namespace_id": {
+          "type": "string",
+          "title": "NamespaceID это идентификатор пространства с файлами"
+        },
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled это флаг отвечающий за доступность файлов в пространстве для использования"
+        },
+        "creator": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Creator это информация о субъекте который создал запись"
+        },
+        "updater": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Updater это информация о субъекте который внёс последнии изменения в запись"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "CreatedAt это дата создания записи"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "UpdatedAt это дата обновления записи"
+        }
+      },
+      "title": "Namespace это информация о пространстве с файлами"
+    },
+    "karma8.discovery.servers.v1.AddRequest": {
+      "type": "object",
+      "properties": {
+        "server_id": {
+          "type": "string",
+          "title": "ServerID это идентификатор сервера"
+        },
+        "host": {
+          "type": "string",
+          "title": "Host это адрес по которому отвечает сервер"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Port это порт по которому отвечает сервер"
+        },
+        "creator": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Creator это информация о субъекте который создал запись"
+        }
+      },
+      "title": "AddRequest это запрос на добавление информации о новом сервере хранения файлов"
+    },
+    "karma8.discovery.servers.v1.AddResponse": {
+      "type": "object",
+      "title": "AddResponse это ответ на запрос на добавление информации о новом сервере"
+    },
+    "karma8.discovery.servers.v1.GetResponse": {
+      "type": "object",
+      "properties": {
+        "server": {
+          "$ref": "#/definitions/karma8.discovery.servers.v1.Server",
+          "title": "Server это информация о сервере"
+        }
+      },
+      "title": "GerResponse это ответ на запрос на получение информации о сервере"
+    },
+    "karma8.discovery.servers.v1.ListResponse": {
+      "type": "object",
+      "properties": {
+        "servers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/karma8.discovery.servers.v1.Server"
+          }
+        }
+      },
+      "title": "ListResponse это ответ на запрос всех зарегистрированных серверов"
+    },
+    "karma8.discovery.servers.v1.Server": {
+      "type": "object",
+      "properties": {
+        "server_id": {
+          "type": "string",
+          "title": "ServerID это идентификатор сервера"
+        },
+        "host": {
+          "type": "string",
+          "title": "Host это адрес по которому отвечает сервер"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Port это порт по которому отвечает сервер"
+        },
+        "creator": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Creator это информация о субъекте который создал запись"
+        },
+        "updater": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
+          "title": "Updater это информация о субъекте который внёс последнии изменения в запись"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "CreatedAt это дата создания записи"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "UpdatedAt это дата обновления записи"
+        }
+      },
+      "title": "Server это информация о сервере"
+    },
+    "karma8.discovery.subjects.v1.Subject": {
+      "type": "object",
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "title": "SubjectID это идентификатор субъекта"
+        },
+        "subject_type": {
+          "$ref": "#/definitions/karma8.discovery.subjects.v1.Type",
+          "title": "SubjectType это тип субъекта"
+        }
+      },
+      "title": "Subject это информация о субъекте"
+    },
+    "karma8.discovery.subjects.v1.Type": {
+      "type": "string",
+      "enum": [
+        "TYPE_UNSPECIFIED",
+        "TYPE_SERVICE_ACCOUNT",
+        "TYPE_USER"
+      ],
+      "default": "TYPE_UNSPECIFIED",
+      "description": "- TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+      "title": "Type это тип субъекта"
+    }
+  }
+}
