@@ -19,6 +19,9 @@ type Storage interface {
 	// Get возвращает информацию о файле
 	Get(id.NamespaceID, id.FileID) (*File, error)
 
+	// ListByNamespaceID возвращает информацию о файлах зарегистрированных в пространстве
+	ListByNamespaceID(id.NamespaceID) (*[]File, error)
+
 	// Enable включает доступ к файлу для пользователей
 	Enable(
 		namespaceID id.NamespaceID,

@@ -7,8 +7,8 @@ import (
 	"github.com/mantyr/karma8-http-file-storage-service/internal/storages/files"
 )
 
-// ListByNamespace возвращает информацию обо всех файлах в рамках пространства для хранения файлов
-func (s *Storage) ListByNamespace(
+// ListByNamespaceID возвращает информацию обо всех файлах в рамках пространства для хранения файлов
+func (s *Storage) ListByNamespaceID(
 	namespaceID id.NamespaceID,
 ) (
 	*[]files.File,
