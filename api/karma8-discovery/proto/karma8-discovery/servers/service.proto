@@ -11,7 +11,7 @@ option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karm
 
 service ServerService {
   // Add добавляет информацию о новом сервере хранения файлов
-  rpc Add(AddRequest) returns (AddResponse) {
+  rpc Add(AddRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post: "/api/v1/servers"
       body: "*"
@@ -48,12 +48,12 @@ message AddRequest {
   // Port это порт по которому отвечает сервер
   int32 port = 3;
 
-  // Creator это информация о субъекте который создал запись
-  karma8.discovery.subjects.v1.Subject creator = 4;
-}
+  // StoredDataSize это размер данных которые хранятся на сервере
+  int64 stored_data_size = 4; 
 
-// AddResponse это ответ на запрос на добавление информации о новом сервере
-message AddResponse {}
+  // Creator это информация о субъекте который создал запись
+  karma8.discovery.subjects.v1.Subject creator = 5;
+}
 
 // SetStoredDataSizeRequest это запрос на установку размера данных которые храняться на сервере
 message SetStoredDataSizeRequest {
@@ -62,6 +62,9 @@ message SetStoredDataSizeRequest {
 
   // StoredDataSize это размер данных которые хранятся на сервере
   int64 stored_data_size = 2; 
+
+   // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 3;
 }
 
 // ListRequest это запрос всех зарегистрированных серверов

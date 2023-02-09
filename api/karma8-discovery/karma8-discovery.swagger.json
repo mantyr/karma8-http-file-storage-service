@@ -55,7 +55,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/karma8.discovery.namespaces.v1.AddResponse"
+              "properties": {}
             }
           },
           "default": {
@@ -700,7 +700,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/karma8.discovery.servers.v1.AddResponse"
+              "properties": {}
             }
           },
           "default": {
@@ -790,6 +790,26 @@
             "required": false,
             "type": "string",
             "format": "int64"
+          },
+          {
+            "name": "updater.subject_id",
+            "description": "SubjectID это идентификатор субъекта",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updater.subject_type",
+            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TYPE_UNSPECIFIED",
+              "TYPE_SERVICE_ACCOUNT",
+              "TYPE_USER"
+            ],
+            "default": "TYPE_UNSPECIFIED"
           }
         ],
         "tags": [
@@ -958,10 +978,6 @@
       },
       "title": "AddRequest это запрос на добавление информации о новом пространстве для хранения файлов"
     },
-    "karma8.discovery.namespaces.v1.AddResponse": {
-      "type": "object",
-      "title": "AddResponse это ответ на запрос на добавление информации о новом пространстве"
-    },
     "karma8.discovery.namespaces.v1.GetResponse": {
       "type": "object",
       "properties": {
@@ -1033,16 +1049,17 @@
           "format": "int32",
           "title": "Port это порт по которому отвечает сервер"
         },
+        "stored_data_size": {
+          "type": "string",
+          "format": "int64",
+          "title": "StoredDataSize это размер данных которые хранятся на сервере"
+        },
         "creator": {
           "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",
           "title": "Creator это информация о субъекте который создал запись"
         }
       },
       "title": "AddRequest это запрос на добавление информации о новом сервере хранения файлов"
-    },
-    "karma8.discovery.servers.v1.AddResponse": {
-      "type": "object",
-      "title": "AddResponse это ответ на запрос на добавление информации о новом сервере"
     },
     "karma8.discovery.servers.v1.GetResponse": {
       "type": "object",

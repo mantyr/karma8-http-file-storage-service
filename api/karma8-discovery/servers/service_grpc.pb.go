@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServerServiceClient interface {
 	// Add добавляет информацию о новом сервере хранения файлов
-	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// SetStoredDataSize устанавливает значение количества сохранённых данных на сервере
 	SetStoredDataSize(ctx context.Context, in *SetStoredDataSizeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных серверов
@@ -41,8 +41,8 @@ func NewServerServiceClient(cc grpc.ClientConnInterface) ServerServiceClient {
 	return &serverServiceClient{cc}
 }
 
-func (c *serverServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error) {
-	out := new(AddResponse)
+func (c *serverServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -82,7 +82,7 @@ func (c *serverServiceClient) Get(ctx context.Context, in *GetRequest, opts ...g
 // for forward compatibility
 type ServerServiceServer interface {
 	// Add добавляет информацию о новом сервере хранения файлов
-	Add(context.Context, *AddRequest) (*AddResponse, error)
+	Add(context.Context, *AddRequest) (*emptypb.Empty, error)
 	// SetStoredDataSize устанавливает значение количества сохранённых данных на сервере
 	SetStoredDataSize(context.Context, *SetStoredDataSizeRequest) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных серверов
@@ -95,7 +95,7 @@ type ServerServiceServer interface {
 type UnimplementedServerServiceServer struct {
 }
 
-func (UnimplementedServerServiceServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
+func (UnimplementedServerServiceServer) Add(context.Context, *AddRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
 func (UnimplementedServerServiceServer) SetStoredDataSize(context.Context, *SetStoredDataSizeRequest) (*emptypb.Empty, error) {

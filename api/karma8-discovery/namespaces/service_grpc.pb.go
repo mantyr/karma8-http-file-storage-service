@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NamespaceServiceClient interface {
 	// Add добавляет информацию о новом пространстве для хранения файлов
-	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных пространств
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
 	// Get возвращает информацию о пространстве с файлами
@@ -45,8 +45,8 @@ func NewNamespaceServiceClient(cc grpc.ClientConnInterface) NamespaceServiceClie
 	return &namespaceServiceClient{cc}
 }
 
-func (c *namespaceServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error) {
-	out := new(AddResponse)
+func (c *namespaceServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/karma8.discovery.namespaces.v1.NamespaceService/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (c *namespaceServiceClient) Delete(ctx context.Context, in *DeleteRequest, 
 // for forward compatibility
 type NamespaceServiceServer interface {
 	// Add добавляет информацию о новом пространстве для хранения файлов
-	Add(context.Context, *AddRequest) (*AddResponse, error)
+	Add(context.Context, *AddRequest) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных пространств
 	List(context.Context, *ListRequest) (*ListResponse, error)
 	// Get возвращает информацию о пространстве с файлами
@@ -121,7 +121,7 @@ type NamespaceServiceServer interface {
 type UnimplementedNamespaceServiceServer struct {
 }
 
-func (UnimplementedNamespaceServiceServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
+func (UnimplementedNamespaceServiceServer) Add(context.Context, *AddRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
 func (UnimplementedNamespaceServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {

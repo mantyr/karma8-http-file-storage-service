@@ -11,7 +11,7 @@ option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karm
 
 service NamespaceService {
   // Add добавляет информацию о новом пространстве для хранения файлов
-  rpc Add(AddRequest) returns (AddResponse) {
+  rpc Add(AddRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post: "/api/v1/namespaces"
       body: "*"
@@ -60,9 +60,6 @@ message AddRequest {
   // Creator это информация о субъекте который создал запись
   karma8.discovery.subjects.v1.Subject creator = 3;
 }
-
-// AddResponse это ответ на запрос на добавление информации о новом пространстве
-message AddResponse {}
 
 // ListRequest это запрос всех зарегистрированных пространств
 message ListRequest {}
