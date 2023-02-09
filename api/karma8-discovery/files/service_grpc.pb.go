@@ -23,14 +23,16 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FileServiceClient interface {
-	// Add добавляет информацию о новом файле
+	// Add добавляет информацию о новом файле и помечает его пустым (см. метод Finish)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	// Finish помечает файл как закачанным
+	Finish(ctx context.Context, in *FinishRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных файлов
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
-	// Get возвращает информацию о файле
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	// GetByFileID возвращает информацию о файле по идентификатору
+	GetByFileID(ctx context.Context, in *GetByFileIDRequest, opts ...grpc.CallOption) (*GetByFileIDResponse, error)
 	// GetByFileName возвращает информацию о файле по названию
-	GetByFileName(ctx context.Context, in *GetByFileNameRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	GetByFileName(ctx context.Context, in *GetByFileNameRequest, opts ...grpc.CallOption) (*GetByFileNameResponse, error)
 	// Enable включает доступность файла для использования
 	Enable(ctx context.Context, in *EnableRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Disable отключает доступность файла для использования
@@ -56,6 +58,15 @@ func (c *fileServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grp
 	return out, nil
 }
 
+func (c *fileServiceClient) Finish(ctx context.Context, in *FinishRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/karma8.discovery.files.v1.FileService/Finish", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *fileServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	out := new(ListResponse)
 	err := c.cc.Invoke(ctx, "/karma8.discovery.files.v1.FileService/List", in, out, opts...)
@@ -65,17 +76,17 @@ func (c *fileServiceClient) List(ctx context.Context, in *ListRequest, opts ...g
 	return out, nil
 }
 
-func (c *fileServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, "/karma8.discovery.files.v1.FileService/Get", in, out, opts...)
+func (c *fileServiceClient) GetByFileID(ctx context.Context, in *GetByFileIDRequest, opts ...grpc.CallOption) (*GetByFileIDResponse, error) {
+	out := new(GetByFileIDResponse)
+	err := c.cc.Invoke(ctx, "/karma8.discovery.files.v1.FileService/GetByFileID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileServiceClient) GetByFileName(ctx context.Context, in *GetByFileNameRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
+func (c *fileServiceClient) GetByFileName(ctx context.Context, in *GetByFileNameRequest, opts ...grpc.CallOption) (*GetByFileNameResponse, error) {
+	out := new(GetByFileNameResponse)
 	err := c.cc.Invoke(ctx, "/karma8.discovery.files.v1.FileService/GetByFileName", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -114,14 +125,16 @@ func (c *fileServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts 
 // All implementations should embed UnimplementedFileServiceServer
 // for forward compatibility
 type FileServiceServer interface {
-	// Add добавляет информацию о новом файле
+	// Add добавляет информацию о новом файле и помечает его пустым (см. метод Finish)
 	Add(context.Context, *AddRequest) (*AddResponse, error)
+	// Finish помечает файл как закачанным
+	Finish(context.Context, *FinishRequest) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных файлов
 	List(context.Context, *ListRequest) (*ListResponse, error)
-	// Get возвращает информацию о файле
-	Get(context.Context, *GetRequest) (*GetResponse, error)
+	// GetByFileID возвращает информацию о файле по идентификатору
+	GetByFileID(context.Context, *GetByFileIDRequest) (*GetByFileIDResponse, error)
 	// GetByFileName возвращает информацию о файле по названию
-	GetByFileName(context.Context, *GetByFileNameRequest) (*GetResponse, error)
+	GetByFileName(context.Context, *GetByFileNameRequest) (*GetByFileNameResponse, error)
 	// Enable включает доступность файла для использования
 	Enable(context.Context, *EnableRequest) (*emptypb.Empty, error)
 	// Disable отключает доступность файла для использования
@@ -137,13 +150,16 @@ type UnimplementedFileServiceServer struct {
 func (UnimplementedFileServiceServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
+func (UnimplementedFileServiceServer) Finish(context.Context, *FinishRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Finish not implemented")
+}
 func (UnimplementedFileServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedFileServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedFileServiceServer) GetByFileID(context.Context, *GetByFileIDRequest) (*GetByFileIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByFileID not implemented")
 }
-func (UnimplementedFileServiceServer) GetByFileName(context.Context, *GetByFileNameRequest) (*GetResponse, error) {
+func (UnimplementedFileServiceServer) GetByFileName(context.Context, *GetByFileNameRequest) (*GetByFileNameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByFileName not implemented")
 }
 func (UnimplementedFileServiceServer) Enable(context.Context, *EnableRequest) (*emptypb.Empty, error) {
@@ -185,6 +201,24 @@ func _FileService_Add_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FileService_Finish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinishRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileServiceServer).Finish(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/karma8.discovery.files.v1.FileService/Finish",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileServiceServer).Finish(ctx, req.(*FinishRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FileService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListRequest)
 	if err := dec(in); err != nil {
@@ -203,20 +237,20 @@ func _FileService_List_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+func _FileService_GetByFileID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByFileIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileServiceServer).Get(ctx, in)
+		return srv.(FileServiceServer).GetByFileID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/karma8.discovery.files.v1.FileService/Get",
+		FullMethod: "/karma8.discovery.files.v1.FileService/GetByFileID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileServiceServer).Get(ctx, req.(*GetRequest))
+		return srv.(FileServiceServer).GetByFileID(ctx, req.(*GetByFileIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -305,12 +339,16 @@ var FileService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FileService_Add_Handler,
 		},
 		{
+			MethodName: "Finish",
+			Handler:    _FileService_Finish_Handler,
+		},
+		{
 			MethodName: "List",
 			Handler:    _FileService_List_Handler,
 		},
 		{
-			MethodName: "Get",
-			Handler:    _FileService_Get_Handler,
+			MethodName: "GetByFileID",
+			Handler:    _FileService_GetByFileID_Handler,
 		},
 		{
 			MethodName: "GetByFileName",

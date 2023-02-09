@@ -254,7 +254,7 @@ karma8 storage --help
             - [ ] Получение информации о файле
     - [ ] Слой API
         - [ ] namespaces
-        - [ ] files
+        - [x] files
         - [ ] servers
     - [ ] Слой хранения данных
         - [ ] namespaces

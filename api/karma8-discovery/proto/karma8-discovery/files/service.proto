@@ -10,47 +10,53 @@ import "karma8-discovery/subjects/subject.proto";
 option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/files";
 
 service FileService {
-  // Add добавляет информацию о новом файле
+  // Add добавляет информацию о новом файле и помечает его пустым (см. метод Finish)
   rpc Add(AddRequest) returns (AddResponse) {
     option (google.api.http) = {
-      post: "/api/v1/files"
+      post: "/api/v1/namespaces/{namespace_id}/files"
       body: "*"
+    };
+  }
+  // Finish помечает файл как закачанным
+  rpc Finish(FinishRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/namespaces/{namespace_id}/files/{file_id}/finish"
     };
   }
   // List возвращает список всех зарегистрированных файлов
   rpc List(ListRequest) returns (ListResponse) {
     option (google.api.http) = {
-      get: "/api/v1/files"
+      get: "/api/v1/namespaces/{namespace_id}/files"
     };
   }
-  // Get возвращает информацию о файле
-  rpc Get(GetRequest) returns (GetResponse) {
+  // GetByFileID возвращает информацию о файле по идентификатору
+  rpc GetByFileID(GetByFileIDRequest) returns (GetByFileIDResponse) {
     option (google.api.http) = {
-      get: "/api/v1/files/{file_id}"
+      get: "/api/v1/namespaces/{namespace_id}/files/{file_id}"
     };
   }
   // GetByFileName возвращает информацию о файле по названию
-  rpc GetByFileName(GetByFileNameRequest) returns (GetResponse) {
+  rpc GetByFileName(GetByFileNameRequest) returns (GetByFileNameResponse) {
     option (google.api.http) = {
-      get: "/api/v1/files/get-by-name"
+      get: "/api/v1/namespaces/{namespace_id}/files/get-by-name/{file_name}"
     };
   }
   // Enable включает доступность файла для использования
   rpc Enable(EnableRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      put: "/api/v1/files/{file_id}/enable"
+      put: "/api/v1/namespaces/{namespace_id}/files/{file_id}/enable"
     };
   }
   // Disable отключает доступность файла для использования
   rpc Disable(DisableRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      put: "/api/v1/files/{file_id}/disable"
+      put: "/api/v1/namespaces/{namespace_id}/files/{file_id}/disable"
     };
   }
   // Delete удаляет информацию о файле
   rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/api/v1/files/{file_id}"
+      delete: "/api/v1/namespaces/{namespace_id}/files/{file_id}"
     };
   }
 }
@@ -60,37 +66,68 @@ message AddRequest {
   // NamespaceID это идентификатор пространства
   string namespace_id = 1;
 
-  // FileID это идентификатор файла
-  string file_id = 2;
-
-  // Servers это перечень серверов на которых будут храниться части файла
-  repeated string servers = 3;
+  // FileName это название файла в пространстве для хранения файлов
+  string file_name = 2;
 
   // Enabled это флаг указывающий что файл доступен для использования
-  bool enabled = 4;
+  bool enabled = 3;
 
   // Creator это информация о субъекте который создал запись
-  karma8.discovery.subjects.v1.Subject creator = 5;
+  karma8.discovery.subjects.v1.Subject creator = 4;
 }
 
 // AddResponse это ответ на запрос на добавление информации о новом файле
-message AddResponse {}
-
-// ListRequest это запрос всех зарегистрированных файлов
-message ListRequest {}
-
-// ListResponse это ответ на запрос всех зарегистрированных файлов
-message ListResponse {
-  repeated File files = 1;
-}
-
-// GetRequest это запрос на получение информации о файле
-message GetRequest {
+message AddResponse {
   // NamespaceID это идентификатор пространства
   string namespace_id = 1;
 
   // FileID это идентификатор файла
   string file_id = 2;
+
+  // Servers это перечень идентификаторов серверов на которых будут храниться части файла
+  repeated string servers = 3;
+}
+
+// FinishRequest это запрос на отметку файла как закачанный
+message FinishRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+
+  // Updater это информация о субъекте который внёс последнии изменения в запись
+  karma8.discovery.subjects.v1.Subject updater = 3;
+}
+
+// ListRequest это запрос всех зарегистрированных файлов в рамках пространства для хранения файлов
+message ListRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+}
+
+// ListResponse это ответ на запрос всех зарегистрированных файлов
+message ListResponse {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // Files это перечень файлов зарегистрированных в пространстве
+  repeated File files = 2;
+}
+
+// GetByFileIDRequest это запрос на получение информации о файле по идентификатору
+message GetByFileIDRequest {
+  // NamespaceID это идентификатор пространства
+  string namespace_id = 1;
+
+  // FileID это идентификатор файла
+  string file_id = 2;
+}
+
+// GetByFileIDResponse это ответ на запрос на получение информации о файле по идентификатору
+message GetByFileIDResponse {
+  // File это информация о файле
+  File file = 1;
 }
 
 // GetByFileNameRequest это запрос на получение информации о файле по названию
@@ -102,9 +139,9 @@ message GetByFileNameRequest {
   string file_name = 2;
 }
 
-// GerResponse это ответ на запрос на получение информации о файле
-message GetResponse {
-  // File это информация о пространстве
+// GetByFileNameResponse это ответ на запрос на получение информации о файле по названию
+message GetByFileNameResponse {
+  // File это информация о файле
   File file = 1;
 }
 

@@ -7,7 +7,7 @@ import "karma8-discovery/subjects/subject.proto";
 
 option go_package = "github.com/mantyr/karma8-http-file-storage-service/api/karma8-discovery/files";
 
-// File это информация о пространстве с файлами
+// File это информация о файле
 message File {
   // NamespaceID это идентификатор пространства с файлами
   string namespace_id = 1;
@@ -15,21 +15,27 @@ message File {
   // FileID это идентификатор файла
   string file_id = 2;
 
-  // Enabled это флаг отвечающий за доступность файла для использования
-  bool enabled = 3;
+  // FileName это название файла в пространстве для хранения файлов
+  string file_name = 3;
 
-  // Servers это перечень серверов на которых хранятся части файла
-  repeated string servers = 4;
+  // Enabled это флаг отвечающий за доступность файла для использования
+  bool enabled = 4;
+
+  // Finished это флаг отвечающий за стутс "закачан файл или нет"
+  bool finished = 5;
+
+  // Servers это перечень идентификаторов серверов на которых хранятся части файла
+  repeated string servers = 6;
 
   // Creator это информация о субъекте который создал запись
-  karma8.discovery.subjects.v1.Subject creator = 5;
+  karma8.discovery.subjects.v1.Subject creator = 7;
 
   // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 6;
+  karma8.discovery.subjects.v1.Subject updater = 8;
 
   // CreatedAt это дата создания записи
-  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp created_at = 9;
 
   // UpdatedAt это дата обновления записи
-  google.protobuf.Timestamp updated_at = 8;
+  google.protobuf.Timestamp updated_at = 10;
 }
