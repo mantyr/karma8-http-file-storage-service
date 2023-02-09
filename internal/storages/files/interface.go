@@ -16,8 +16,11 @@ type Storage interface {
 	// Add добавляет информацию о файле
 	Add(*File) error
 
-	// Get возвращает информацию о файле
-	Get(id.NamespaceID, id.FileID) (*File, error)
+	// GetByFileID возвращает информацию о файле по идентификатору
+	GetByFileID(id.NamespaceID, id.FileID) (*File, error)
+
+	// GetByFileName возвращает информацию о файле по названию файла
+	GetByFileName(id.NamespaceID, string) (*File, error)
 
 	// ListByNamespaceID возвращает информацию о файлах зарегистрированных в пространстве
 	ListByNamespaceID(id.NamespaceID) (*[]File, error)

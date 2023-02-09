@@ -66,14 +66,17 @@ message AddRequest {
   // NamespaceID это идентификатор пространства
   string namespace_id = 1;
 
+  // FileID это идентификатор файла (если поле не заполненно то идентификатор генерируется)
+  string file_id = 2;
+
   // FileName это название файла в пространстве для хранения файлов
-  string file_name = 2;
+  string file_name = 3;
 
   // Enabled это флаг указывающий что файл доступен для использования
-  bool enabled = 3;
+  bool enabled = 4;
 
   // Creator это информация о субъекте который создал запись
-  karma8.discovery.subjects.v1.Subject creator = 4;
+  karma8.discovery.subjects.v1.Subject creator = 5;
 }
 
 // AddResponse это ответ на запрос на добавление информации о новом файле

@@ -65,7 +65,7 @@ func Run(t *testing.T, st files.Storage) {
 		err = st.Add(file)
 		So(err, ShouldBeNil)
 		Convey("Проверяем что в бд сохранилась информация о файле", func() {
-			result, err := st.Get(namespaceID, fileID)
+			result, err := st.GetByFileID(namespaceID, fileID)
 			So(err, ShouldBeNil)
 			So(result, ShouldNotBeNil)
 			Convey("Проверяем что проставилась дата создания и обновления", func() {
@@ -90,7 +90,7 @@ func Run(t *testing.T, st files.Storage) {
 				So(err, ShouldBeNil)
 				So(storages.CheckNotFound(err), ShouldEqual, false)
 				So(storages.CheckExists(err), ShouldEqual, false)
-				result, err := st.Get(namespaceID, fileID)
+				result, err := st.GetByFileID(namespaceID, fileID)
 				So(result, ShouldBeNil)
 				So(err, ShouldNotBeNil)
 				So(storages.CheckNotFound(err), ShouldEqual, true)
@@ -113,7 +113,7 @@ func Run(t *testing.T, st files.Storage) {
 		Convey("enable уже в активном файле", func() {
 			err := st.Enable(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
 			So(err, ShouldBeNil)
-			result, err := st.Get(namespaceID, fileID)
+			result, err := st.GetByFileID(namespaceID, fileID)
 			So(result, ShouldNotBeNil)
 			So(err, ShouldBeNil)
 			So(result.Enabled, ShouldBeTrue)
@@ -123,7 +123,7 @@ func Run(t *testing.T, st files.Storage) {
 			updaterID, _ := id.GenerateSubjectID()
 			err := st.Enable(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
 			So(err, ShouldBeNil)
-			result, err := st.Get(namespaceID, fileID)
+			result, err := st.GetByFileID(namespaceID, fileID)
 			So(result, ShouldNotBeNil)
 			So(err, ShouldBeNil)
 			So(result.Enabled, ShouldBeTrue)
@@ -133,7 +133,7 @@ func Run(t *testing.T, st files.Storage) {
 			updaterID, _ := id.GenerateSubjectID()
 			err := st.Disable(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
 			So(err, ShouldBeNil)
-			result, err := st.Get(namespaceID, fileID)
+			result, err := st.GetByFileID(namespaceID, fileID)
 			So(result, ShouldNotBeNil)
 			So(err, ShouldBeNil)
 			So(result.Enabled, ShouldBeFalse)
@@ -142,7 +142,7 @@ func Run(t *testing.T, st files.Storage) {
 				updaterID, _ := id.GenerateSubjectID()
 				err := st.Disable(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
 				So(err, ShouldBeNil)
-				result, err := st.Get(namespaceID, fileID)
+				result, err := st.GetByFileID(namespaceID, fileID)
 				So(result, ShouldNotBeNil)
 				So(err, ShouldBeNil)
 				So(result.Enabled, ShouldBeFalse)
@@ -151,7 +151,7 @@ func Run(t *testing.T, st files.Storage) {
 			Convey("enable - включаем повторно", func() {
 				err := st.Enable(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
 				So(err, ShouldBeNil)
-				result, err := st.Get(namespaceID, fileID)
+				result, err := st.GetByFileID(namespaceID, fileID)
 				So(result, ShouldNotBeNil)
 				So(err, ShouldBeNil)
 				So(result.Enabled, ShouldBeTrue)
@@ -165,7 +165,7 @@ func Run(t *testing.T, st files.Storage) {
 		Convey("finish уже в финальном файле", func() {
 			err := st.Finish(namespaceID, fileID, 1000, id.Subject{ID: updaterID, Type: subjects.User})
 			So(err, ShouldBeNil)
-			result, err := st.Get(namespaceID, fileID)
+			result, err := st.GetByFileID(namespaceID, fileID)
 			So(result, ShouldNotBeNil)
 			So(err, ShouldBeNil)
 			So(result.Finished, ShouldBeTrue)
@@ -175,7 +175,7 @@ func Run(t *testing.T, st files.Storage) {
 		Convey("noFinish уже в финальном файле", func() {
 			err := st.NoFinish(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
 			So(err, ShouldBeNil)
-			result, err := st.Get(namespaceID, fileID)
+			result, err := st.GetByFileID(namespaceID, fileID)
 			So(result, ShouldNotBeNil)
 			So(err, ShouldBeNil)
 			So(result.Finished, ShouldBeFalse)
@@ -184,7 +184,7 @@ func Run(t *testing.T, st files.Storage) {
 			Convey("finish", func() {
 				err := st.Finish(namespaceID, fileID, 1000, id.Subject{ID: updaterID, Type: subjects.User})
 				So(err, ShouldBeNil)
-				result, err := st.Get(namespaceID, fileID)
+				result, err := st.GetByFileID(namespaceID, fileID)
 				So(result, ShouldNotBeNil)
 				So(err, ShouldBeNil)
 				So(result.Finished, ShouldBeTrue)
@@ -194,7 +194,7 @@ func Run(t *testing.T, st files.Storage) {
 		})
 	})
 	Convey("Проверяем что нельзя получить не существующий файл", func() {
-		result, err := st.Get(namespaceID, fileID)
+		result, err := st.GetByFileID(namespaceID, fileID)
 		So(err, ShouldNotBeNil)
 		So(result, ShouldBeNil)
 		So(storages.CheckNotFound(err), ShouldEqual, true)
@@ -210,7 +210,7 @@ func Run(t *testing.T, st files.Storage) {
 		)
 	})
 	Convey("Проверяем что нельзя получить файл по пустому идентификатору", func() {
-		result, err := st.Get(namespaceID, id.FileID{})
+		result, err := st.GetByFileID(namespaceID, id.FileID{})
 		So(err, ShouldNotBeNil)
 		So(result, ShouldBeNil)
 		So(storages.CheckNotFound(err), ShouldEqual, false)

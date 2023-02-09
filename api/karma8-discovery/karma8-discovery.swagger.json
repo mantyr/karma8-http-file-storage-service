@@ -329,6 +329,10 @@
             "schema": {
               "type": "object",
               "properties": {
+                "file_id": {
+                  "type": "string",
+                  "title": "FileID это идентификатор файла (если поле не заполненно то идентификатор генерируется)"
+                },
                 "file_name": {
                   "type": "string",
                   "title": "FileName это название файла в пространстве для хранения файлов"

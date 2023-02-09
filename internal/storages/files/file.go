@@ -69,3 +69,11 @@ func (f *File) Check() error {
 	}
 	return nil
 }
+
+func (f *File) GetServers() []string {
+	result := make([]string, 0, len(f.Servers))
+	for i, item := range f.Servers {
+		result[i] = item.String()
+	}
+	return result
+}

@@ -11,10 +11,10 @@ import (
 	"github.com/mantyr/karma8-http-file-storage-service/internal/storages/files"
 )
 
-// Get возвращает информацию о файле
-func (s *Storage) Get(
+// GetByFileName возвращает информацию о файле по названию файла
+func (s *Storage) GetByFileName(
 	namespaceID id.NamespaceID,
-	fileID id.FileID,
+	fileName string,
 ) (
 	*files.File,
 	error,
@@ -22,25 +22,25 @@ func (s *Storage) Get(
 	switch {
 	case namespaceID.IsZero():
 		return nil, errors.New("empty namespaceID")
-	case fileID.IsZero():
-		return nil, errors.New("empty fileID")
+	case fileName == "":
+		return nil, errors.New("empty fileName")
 	}
 	item := &File{}
 	err := s.db.Where(
 		`
 			namespace_id = ?
-			AND file_id = ?
+			AND file_name = ?
 		`,
 		namespaceID,
-		fileID,
+		fileName,
 	).First(item).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, storages.NewNotFound(
 				fmt.Errorf(
-					"file not found (namespace_id=%s, file_id=%s)",
+					"file not found (namespace_id=%s, file_name=%s)",
 					namespaceID.String(),
-					fileID.String(),
+					fileName,
 				),
 			)
 		}

@@ -25,6 +25,9 @@ type Storage interface {
 	// ListOfLessBusy возвращает наименее загруженные сервера в количестве quantity штук
 	ListOfLessBusy(quantity int) (*[]Server, error)
 
+	// List возвращает все зарегистрированные сервера
+	List() (*[]Server, error)
+
 	// SetStoredDataSize устанавливает значение загруженности сервера
 	SetStoredDataSize(
 		serverID id.ServerID,
