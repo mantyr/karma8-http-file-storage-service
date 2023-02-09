@@ -272,6 +272,8 @@ karma8 storage --help
     - [ ] Слой API
         - [ ] files
     - [ ] Слой хранения файлов
+- [ ] Сборка проекта в Dockerfile
+- [ ] Сборка проекта в github CI
 
 ## Author
 
