@@ -255,7 +255,7 @@ karma8 storage --help
     - [ ] Слой API
         - [x] namespaces
         - [x] files
-        - [ ] servers
+        - [x] servers
     - [ ] Слой хранения данных
         - [ ] namespaces
             - [ ] реализация

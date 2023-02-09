@@ -717,38 +717,6 @@
         ]
       }
     },
-    "/api/v1/servers/list-for-next-file": {
-      "get": {
-        "summary": "ListForNextFile возвращает список серверов, наиболее подходящих для хранения следующего файла",
-        "operationId": "ServerService_ListForNextFile",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/karma8.discovery.servers.v1.ListResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/google.rpc.Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "quantity",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "ServerService"
-        ]
-      }
-    },
     "/api/v1/servers/{server_id}": {
       "get": {
         "summary": "Get возвращает информацию о сервере",
@@ -779,62 +747,12 @@
         "tags": [
           "ServerService"
         ]
-      },
-      "delete": {
-        "summary": "Delete удаляет информацию о сервере",
-        "operationId": "ServerService_Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/google.rpc.Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "server_id",
-            "description": "ServerID это идентификатор сервера",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "updater.subject_id",
-            "description": "SubjectID это идентификатор субъекта",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "updater.subject_type",
-            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "TYPE_UNSPECIFIED",
-              "TYPE_SERVICE_ACCOUNT",
-              "TYPE_USER"
-            ],
-            "default": "TYPE_UNSPECIFIED"
-          }
-        ],
-        "tags": [
-          "ServerService"
-        ]
       }
     },
-    "/api/v1/servers/{server_id}/disable": {
+    "/api/v1/servers/{server_id}/stored-data-size": {
       "put": {
-        "summary": "Disable отключает доступность сервера для использования",
-        "operationId": "ServerService_Disable",
+        "summary": "SetStoredDataSize устанавливает значение количества сохранённых данных на сервере",
+        "operationId": "ServerService_SetStoredDataSize",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -858,76 +776,12 @@
             "type": "string"
           },
           {
-            "name": "updater.subject_id",
-            "description": "SubjectID это идентификатор субъекта",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "updater.subject_type",
-            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
+            "name": "stored_data_size",
+            "description": "StoredDataSize это размер данных которые хранятся на сервере",
             "in": "query",
             "required": false,
             "type": "string",
-            "enum": [
-              "TYPE_UNSPECIFIED",
-              "TYPE_SERVICE_ACCOUNT",
-              "TYPE_USER"
-            ],
-            "default": "TYPE_UNSPECIFIED"
-          }
-        ],
-        "tags": [
-          "ServerService"
-        ]
-      }
-    },
-    "/api/v1/servers/{server_id}/enable": {
-      "put": {
-        "summary": "Enable включает доступность сервера для использования",
-        "operationId": "ServerService_Enable",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/google.rpc.Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "server_id",
-            "description": "ServerID это идентификатор сервера",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "updater.subject_id",
-            "description": "SubjectID это идентификатор субъекта",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "updater.subject_type",
-            "description": "SubjectType это тип субъекта\n\n - TYPE_UNSPECIFIED: TypeUnspecified это неизвестный тип субъекта\n - TYPE_SERVICE_ACCOUNT: TypeServiceAccount это сервисный аккаунт\n - TYPE_USER: TypeUser это пользователь",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "TYPE_UNSPECIFIED",
-              "TYPE_SERVICE_ACCOUNT",
-              "TYPE_USER"
-            ],
-            "default": "TYPE_UNSPECIFIED"
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1194,7 +1048,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/karma8.discovery.servers.v1.Server"
-          }
+          },
+          "title": "Servers это перечень серверов хранения файлов"
         }
       },
       "title": "ListResponse это ответ на запрос всех зарегистрированных серверов"
@@ -1214,6 +1069,11 @@
           "type": "integer",
           "format": "int32",
           "title": "Port это порт по которому отвечает сервер"
+        },
+        "stored_data_size": {
+          "type": "string",
+          "format": "int64",
+          "title": "StoredDataSize это размер данных которые хранятся на сервере"
         },
         "creator": {
           "$ref": "#/definitions/karma8.discovery.subjects.v1.Subject",

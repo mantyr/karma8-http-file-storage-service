@@ -25,18 +25,12 @@ const _ = grpc.SupportPackageIsVersion7
 type ServerServiceClient interface {
 	// Add добавляет информацию о новом сервере хранения файлов
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	// SetStoredDataSize устанавливает значение количества сохранённых данных на сервере
+	SetStoredDataSize(ctx context.Context, in *SetStoredDataSizeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных серверов
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
-	// ListForNextFile возвращает список серверов, наиболее подходящих для хранения следующего файла
-	ListForNextFile(ctx context.Context, in *ListForNextFileRequest, opts ...grpc.CallOption) (*ListResponse, error)
 	// Get возвращает информацию о сервере
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	// Enable включает доступность сервера для использования
-	Enable(ctx context.Context, in *EnableRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Disable отключает доступность сервера для использования
-	Disable(ctx context.Context, in *DisableRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Delete удаляет информацию о сервере
-	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type serverServiceClient struct {
@@ -56,18 +50,18 @@ func (c *serverServiceClient) Add(ctx context.Context, in *AddRequest, opts ...g
 	return out, nil
 }
 
-func (c *serverServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
-	out := new(ListResponse)
-	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/List", in, out, opts...)
+func (c *serverServiceClient) SetStoredDataSize(ctx context.Context, in *SetStoredDataSizeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/SetStoredDataSize", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *serverServiceClient) ListForNextFile(ctx context.Context, in *ListForNextFileRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+func (c *serverServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	out := new(ListResponse)
-	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/ListForNextFile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/List", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,51 +77,18 @@ func (c *serverServiceClient) Get(ctx context.Context, in *GetRequest, opts ...g
 	return out, nil
 }
 
-func (c *serverServiceClient) Enable(ctx context.Context, in *EnableRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/Enable", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *serverServiceClient) Disable(ctx context.Context, in *DisableRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/Disable", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *serverServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/karma8.discovery.servers.v1.ServerService/Delete", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ServerServiceServer is the server API for ServerService service.
 // All implementations should embed UnimplementedServerServiceServer
 // for forward compatibility
 type ServerServiceServer interface {
 	// Add добавляет информацию о новом сервере хранения файлов
 	Add(context.Context, *AddRequest) (*AddResponse, error)
+	// SetStoredDataSize устанавливает значение количества сохранённых данных на сервере
+	SetStoredDataSize(context.Context, *SetStoredDataSizeRequest) (*emptypb.Empty, error)
 	// List возвращает список всех зарегистрированных серверов
 	List(context.Context, *ListRequest) (*ListResponse, error)
-	// ListForNextFile возвращает список серверов, наиболее подходящих для хранения следующего файла
-	ListForNextFile(context.Context, *ListForNextFileRequest) (*ListResponse, error)
 	// Get возвращает информацию о сервере
 	Get(context.Context, *GetRequest) (*GetResponse, error)
-	// Enable включает доступность сервера для использования
-	Enable(context.Context, *EnableRequest) (*emptypb.Empty, error)
-	// Disable отключает доступность сервера для использования
-	Disable(context.Context, *DisableRequest) (*emptypb.Empty, error)
-	// Delete удаляет информацию о сервере
-	Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedServerServiceServer should be embedded to have forward compatible implementations.
@@ -137,23 +98,14 @@ type UnimplementedServerServiceServer struct {
 func (UnimplementedServerServiceServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
+func (UnimplementedServerServiceServer) SetStoredDataSize(context.Context, *SetStoredDataSizeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetStoredDataSize not implemented")
+}
 func (UnimplementedServerServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedServerServiceServer) ListForNextFile(context.Context, *ListForNextFileRequest) (*ListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListForNextFile not implemented")
-}
 func (UnimplementedServerServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
-}
-func (UnimplementedServerServiceServer) Enable(context.Context, *EnableRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Enable not implemented")
-}
-func (UnimplementedServerServiceServer) Disable(context.Context, *DisableRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Disable not implemented")
-}
-func (UnimplementedServerServiceServer) Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafeServerServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -185,6 +137,24 @@ func _ServerService_Add_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ServerService_SetStoredDataSize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetStoredDataSizeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServerServiceServer).SetStoredDataSize(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/karma8.discovery.servers.v1.ServerService/SetStoredDataSize",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServerServiceServer).SetStoredDataSize(ctx, req.(*SetStoredDataSizeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ServerService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListRequest)
 	if err := dec(in); err != nil {
@@ -199,24 +169,6 @@ func _ServerService_List_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServerServiceServer).List(ctx, req.(*ListRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ServerService_ListForNextFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListForNextFileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServerServiceServer).ListForNextFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/karma8.discovery.servers.v1.ServerService/ListForNextFile",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServerServiceServer).ListForNextFile(ctx, req.(*ListForNextFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -239,60 +191,6 @@ func _ServerService_Get_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ServerService_Enable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EnableRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServerServiceServer).Enable(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/karma8.discovery.servers.v1.ServerService/Enable",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServerServiceServer).Enable(ctx, req.(*EnableRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ServerService_Disable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DisableRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServerServiceServer).Disable(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/karma8.discovery.servers.v1.ServerService/Disable",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServerServiceServer).Disable(ctx, req.(*DisableRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ServerService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServerServiceServer).Delete(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/karma8.discovery.servers.v1.ServerService/Delete",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServerServiceServer).Delete(ctx, req.(*DeleteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // ServerService_ServiceDesc is the grpc.ServiceDesc for ServerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -305,28 +203,16 @@ var ServerService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ServerService_Add_Handler,
 		},
 		{
+			MethodName: "SetStoredDataSize",
+			Handler:    _ServerService_SetStoredDataSize_Handler,
+		},
+		{
 			MethodName: "List",
 			Handler:    _ServerService_List_Handler,
 		},
 		{
-			MethodName: "ListForNextFile",
-			Handler:    _ServerService_ListForNextFile_Handler,
-		},
-		{
 			MethodName: "Get",
 			Handler:    _ServerService_Get_Handler,
-		},
-		{
-			MethodName: "Enable",
-			Handler:    _ServerService_Enable_Handler,
-		},
-		{
-			MethodName: "Disable",
-			Handler:    _ServerService_Disable_Handler,
-		},
-		{
-			MethodName: "Delete",
-			Handler:    _ServerService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

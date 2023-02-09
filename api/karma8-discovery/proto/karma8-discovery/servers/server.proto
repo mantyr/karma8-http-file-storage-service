@@ -18,15 +18,18 @@ message Server {
   // Port это порт по которому отвечает сервер
   int32 port = 3;
 
+  // StoredDataSize это размер данных которые хранятся на сервере
+  int64 stored_data_size = 4;
+
   // Creator это информация о субъекте который создал запись
-  karma8.discovery.subjects.v1.Subject creator = 4;
+  karma8.discovery.subjects.v1.Subject creator = 5;
 
   // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 5;
+  karma8.discovery.subjects.v1.Subject updater = 6;
 
   // CreatedAt это дата создания записи
-  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp created_at = 7;
 
   // UpdatedAt это дата обновления записи
-  google.protobuf.Timestamp updated_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
 }

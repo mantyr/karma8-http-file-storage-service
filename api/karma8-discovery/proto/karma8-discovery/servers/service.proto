@@ -17,40 +17,22 @@ service ServerService {
       body: "*"
     };
   }
+  // SetStoredDataSize устанавливает значение количества сохранённых данных на сервере
+  rpc SetStoredDataSize(SetStoredDataSizeRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/servers/{server_id}/stored-data-size"
+    };
+  }
   // List возвращает список всех зарегистрированных серверов
   rpc List(ListRequest) returns (ListResponse) {
     option (google.api.http) = {
       get: "/api/v1/servers"
     };
   }
-  // ListForNextFile возвращает список серверов, наиболее подходящих для хранения следующего файла
-  rpc ListForNextFile(ListForNextFileRequest) returns (ListResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/servers/list-for-next-file"
-    };
-  }
   // Get возвращает информацию о сервере
   rpc Get(GetRequest) returns (GetResponse) {
     option (google.api.http) = {
       get: "/api/v1/servers/{server_id}"
-    };
-  }
-  // Enable включает доступность сервера для использования
-  rpc Enable(EnableRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      put: "/api/v1/servers/{server_id}/enable"
-    };
-  }
-  // Disable отключает доступность сервера для использования
-  rpc Disable(DisableRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      put: "/api/v1/servers/{server_id}/disable"
-    };
-  }
-  // Delete удаляет информацию о сервере
-  rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/api/v1/servers/{server_id}"
     };
   }
 }
@@ -73,16 +55,21 @@ message AddRequest {
 // AddResponse это ответ на запрос на добавление информации о новом сервере
 message AddResponse {}
 
+// SetStoredDataSizeRequest это запрос на установку размера данных которые храняться на сервере
+message SetStoredDataSizeRequest {
+  // ServerID это идентификатор сервера
+  string server_id = 1;
+
+  // StoredDataSize это размер данных которые хранятся на сервере
+  int64 stored_data_size = 2; 
+}
+
 // ListRequest это запрос всех зарегистрированных серверов
 message ListRequest {}
 
-// ListForNextFileRequest это запрос списка серверов подходящих для хранения следующего файла
-message ListForNextFileRequest {
-	int32 quantity = 1;
-}
-
 // ListResponse это ответ на запрос всех зарегистрированных серверов
 message ListResponse {
+  // Servers это перечень серверов хранения файлов
   repeated Server servers = 1;
 }
 
@@ -96,31 +83,4 @@ message GetRequest {
 message GetResponse {
   // Server это информация о сервере
   Server server = 1;
-}
-
-// EnableRequest это запрос на включение доступности ранее выключенного сервера
-message EnableRequest {
-  // ServerID это идентификатор сервера
-  string server_id = 1;
-
-  // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 2;
-}
-
-// DisableRequest это запрос на выключение доступности сервера
-message DisableRequest {
-  // ServerID это идентификатор сервера
-  string server_id = 1;
-
-  // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 2;
-}
-
-// DeleteRequest это запрос на удаление информации о сервере
-message DeleteRequest {
-  // ServerID это идентификатор сервера
-  string server_id = 1;
-
-  // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 2;
 }
