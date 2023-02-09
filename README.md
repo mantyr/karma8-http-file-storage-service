@@ -132,6 +132,26 @@ karma8 discovery --config=./config.yml
 karma8 discovery --help
 ```
 
+### Миграции базы данных
+
+Для миграций будем использовать утилиту [SQL-Migrate][sqlmigrate]
+
+#### Настройки для утилиты миграции
+
+Файд `dbconfig.yml` содержит настройки для утилиты миграции.
+
+#### Команда для запуска миграций
+
+```bash
+make db.migrate.up
+```
+
+или
+
+```bash
+godotenv -f ./env/postgres.env sql-migrate up
+```
+
 ## Сервис Karma8 Storage
 
 - Хранит части файлов
@@ -209,3 +229,4 @@ karma8 storage --help
 [Oleg Shevelev][mantyr]
 
 [mantyr]: https://github.com/mantyr
+[sqlmigrate]: https://github.com/rubenv/sql-migrate
