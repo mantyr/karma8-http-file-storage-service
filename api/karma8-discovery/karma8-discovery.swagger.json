@@ -1112,7 +1112,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/karma8.discovery.namespaces.v1.Namespace"
-          }
+          },
+          "title": "Namespaces это перечень пространств для хранения файлов"
         }
       },
       "title": "ListResponse это ответ на запрос всех зарегистрированных пространств"

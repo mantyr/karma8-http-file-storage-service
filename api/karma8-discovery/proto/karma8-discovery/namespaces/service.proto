@@ -69,6 +69,7 @@ message ListRequest {}
 
 // ListResponse это ответ на запрос всех зарегистрированных пространств
 message ListResponse {
+  // Namespaces это перечень пространств для хранения файлов
   repeated Namespace namespaces = 1;
 }
 
