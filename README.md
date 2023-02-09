@@ -264,9 +264,9 @@ karma8 storage --help
         - [x] files
         - [x] servers
     - [ ] Слой хранения данных
-        - [ ] namespaces
-            - [ ] реализация
-            - [ ] тесты
+        - [x] namespaces
+            - [x] реализация
+            - [x] тесты
         - [x] files
             - [x] реализация
             - [x] тесты
