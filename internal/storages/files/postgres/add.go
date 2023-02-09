@@ -19,15 +19,17 @@ func (s *Storage) Add(file *files.File) error {
 		return err
 	}
 	item := &File{
-		NamespaceID:  file.NamespaceID,
-		FileID:       file.FileID,
-		Name:         file.Name,
-		Enabled:      file.Enabled,
-		CreatorID:    file.Creator.ID,
-		CreatorType:  file.Creator.Type,
-		UpdaterID:    file.Updater.ID,
-		UpdaterType:  file.Updater.Type,
-		CreatedAt:    time.Now(),
+		NamespaceID: file.NamespaceID,
+		FileID:      file.FileID,
+		Name:        file.Name,
+		Enabled:     file.Enabled,
+		Finished:    file.Finished,
+		Size:        file.Size,
+		CreatorID:   file.Creator.ID,
+		CreatorType: file.Creator.Type,
+		UpdaterID:   file.Updater.ID,
+		UpdaterType: file.Updater.Type,
+		CreatedAt:   time.Now(),
 	}
 	item.UpdatedAt = item.CreatedAt
 	item.SetServers(file.Servers)

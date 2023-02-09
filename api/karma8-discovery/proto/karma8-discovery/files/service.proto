@@ -96,8 +96,11 @@ message FinishRequest {
   // FileID это идентификатор файла
   string file_id = 2;
 
+  // Size это размер файла
+  int64 size = 3;
+
   // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 3;
+  karma8.discovery.subjects.v1.Subject updater = 4;
 }
 
 // ListRequest это запрос всех зарегистрированных файлов в рамках пространства для хранения файлов

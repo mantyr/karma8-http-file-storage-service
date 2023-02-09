@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm/logger"
 
 	driver "github.com/mantyr/karma8-http-file-storage-service/internal/drivers/postgres"
-	storage"github.com/mantyr/karma8-http-file-storage-service/internal/storages/files"
+	storage "github.com/mantyr/karma8-http-file-storage-service/internal/storages/files"
 )
 
 // Storage это реализация хранилища

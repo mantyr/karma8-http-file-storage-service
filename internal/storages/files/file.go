@@ -21,6 +21,12 @@ type File struct {
 	// Enabled означает доступен ли файл для использования
 	Enabled bool
 
+	// Finished означает что файл был залит на сервер полностью
+	Finished bool
+
+	// Size это размер файла
+	Size int64
+
 	// Servers это перечень серверов на которых хранятся части файла
 	Servers []id.ServerID
 

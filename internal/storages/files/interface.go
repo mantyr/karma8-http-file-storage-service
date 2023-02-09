@@ -33,6 +33,21 @@ type Storage interface {
 		updater id.Subject,
 	) error
 
+	// NoFinish помечает файл как требующий закачки
+	NoFinish(
+		namespaceID id.NamespaceID,
+		fileID id.FileID,
+		updater id.Subject,
+	) error
+
+	// Finish помечает файл как полностью закачанный
+	Finish(
+		namespaceID id.NamespaceID,
+		fileID id.FileID,
+		size int64,
+		updater id.Subject,
+	) error
+
 	// Delete удаляет информацию о файле
 	Delete(
 		namespaceID id.NamespaceID,

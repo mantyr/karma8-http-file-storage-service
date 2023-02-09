@@ -50,6 +50,8 @@ func Run(t *testing.T, st files.Storage) {
 		FileID:      fileID,
 		Name:        "path/file.txt",
 		Enabled:     true,
+		Finished:    true,
+		Size:        10,
 		Servers: []id.ServerID{
 			serverID1,
 			serverID2,
@@ -157,6 +159,40 @@ func Run(t *testing.T, st files.Storage) {
 			})
 		})
 	})
+	Convey("Проверяем финализацию файла", func() {
+		err = st.Add(file)
+		So(err, ShouldBeNil)
+		Convey("finish уже в финальном файле", func() {
+			err := st.Finish(namespaceID, fileID, 1000, id.Subject{ID: updaterID, Type: subjects.User})
+			So(err, ShouldBeNil)
+			result, err := st.Get(namespaceID, fileID)
+			So(result, ShouldNotBeNil)
+			So(err, ShouldBeNil)
+			So(result.Finished, ShouldBeTrue)
+			So(result.Size, ShouldEqual, int64(1000))
+			So(result.CreatedAt.UnixNano(), ShouldNotEqual, result.UpdatedAt.UnixNano())
+		})
+		Convey("noFinish уже в финальном файле", func() {
+			err := st.NoFinish(namespaceID, fileID, id.Subject{ID: updaterID, Type: subjects.User})
+			So(err, ShouldBeNil)
+			result, err := st.Get(namespaceID, fileID)
+			So(result, ShouldNotBeNil)
+			So(err, ShouldBeNil)
+			So(result.Finished, ShouldBeFalse)
+			So(result.Size, ShouldEqual, int64(0))
+			So(result.CreatedAt.UnixNano(), ShouldNotEqual, result.UpdatedAt.UnixNano())
+			Convey("finish", func() {
+				err := st.Finish(namespaceID, fileID, 1000, id.Subject{ID: updaterID, Type: subjects.User})
+				So(err, ShouldBeNil)
+				result, err := st.Get(namespaceID, fileID)
+				So(result, ShouldNotBeNil)
+				So(err, ShouldBeNil)
+				So(result.Finished, ShouldBeTrue)
+				So(result.Size, ShouldEqual, int64(1000))
+				So(result.CreatedAt.UnixNano(), ShouldNotEqual, result.UpdatedAt.UnixNano())
+			})
+		})
+	})
 	Convey("Проверяем что нельзя получить не существующий файл", func() {
 		result, err := st.Get(namespaceID, fileID)
 		So(err, ShouldNotBeNil)
@@ -220,6 +256,12 @@ func checkFiles(
 		})
 		Convey("Enabled", func() {
 			So(result.Enabled, ShouldEqual, file.Enabled)
+		})
+		Convey("Finished", func() {
+			So(result.Finished, ShouldEqual, file.Finished)
+		})
+		Convey("Size", func() {
+			So(result.Size, ShouldEqual, file.Size)
 		})
 		Convey("Servers", func() {
 			So(result.Servers, ShouldResemble, file.Servers)

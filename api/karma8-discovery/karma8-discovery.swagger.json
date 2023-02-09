@@ -638,6 +638,14 @@
             "type": "string"
           },
           {
+            "name": "size",
+            "description": "Size это размер файла",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
             "name": "updater.subject_id",
             "description": "SubjectID это идентификатор субъекта",
             "in": "query",
@@ -861,6 +869,11 @@
         "finished": {
           "type": "boolean",
           "title": "Finished это флаг отвечающий за стутс \"закачан файл или нет\""
+        },
+        "size": {
+          "type": "string",
+          "format": "int64",
+          "title": "Size это размер файла"
         },
         "servers": {
           "type": "array",

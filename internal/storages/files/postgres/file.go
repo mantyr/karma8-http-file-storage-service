@@ -26,6 +26,12 @@ type File struct {
 	// Enabled это общий выключатель файла для всех
 	Enabled bool `gorm:"column:enabled"`
 
+	// Finished это флаг указывающий что файл был закачан полностью и теперь его можно показывать пользователям
+	Finished bool `gorm:"column:finished"`
+
+	// Size это размер файла
+	Size int64 `gorm:"column:size"`
+
 	// CreatorID это идентификатор субъекта который создал запись
 	CreatorID id.SubjectID `gorm:"column:creator_id"`
 

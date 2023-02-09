@@ -51,15 +51,17 @@ func (s *Storage) Get(
 		return nil, err
 	}
 	result := &files.File{
-		NamespaceID:  item.NamespaceID,
-		FileID:       item.FileID,
-		Name:         item.Name,
-		Servers:      servers,
-		Enabled:      item.Enabled,
-		Creator:      id.Subject{ID: item.CreatorID, Type: item.CreatorType},
-		Updater:      id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},
-		CreatedAt:    item.CreatedAt,
-		UpdatedAt:    item.UpdatedAt,
+		NamespaceID: item.NamespaceID,
+		FileID:      item.FileID,
+		Name:        item.Name,
+		Servers:     servers,
+		Enabled:     item.Enabled,
+		Finished:    item.Finished,
+		Size:        item.Size,
+		Creator:     id.Subject{ID: item.CreatorID, Type: item.CreatorType},
+		Updater:     id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},
+		CreatedAt:   item.CreatedAt,
+		UpdatedAt:   item.UpdatedAt,
 	}
 	return result, nil
 }

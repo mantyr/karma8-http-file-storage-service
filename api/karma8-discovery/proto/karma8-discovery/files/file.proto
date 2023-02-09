@@ -24,18 +24,21 @@ message File {
   // Finished это флаг отвечающий за стутс "закачан файл или нет"
   bool finished = 5;
 
+  // Size это размер файла
+  int64 size = 6;
+
   // Servers это перечень идентификаторов серверов на которых хранятся части файла
-  repeated string servers = 6;
+  repeated string servers = 7;
 
   // Creator это информация о субъекте который создал запись
-  karma8.discovery.subjects.v1.Subject creator = 7;
+  karma8.discovery.subjects.v1.Subject creator = 8;
 
   // Updater это информация о субъекте который внёс последнии изменения в запись
-  karma8.discovery.subjects.v1.Subject updater = 8;
+  karma8.discovery.subjects.v1.Subject updater = 9;
 
   // CreatedAt это дата создания записи
-  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp created_at = 10;
 
   // UpdatedAt это дата обновления записи
-  google.protobuf.Timestamp updated_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
 }

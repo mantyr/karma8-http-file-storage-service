@@ -52,6 +52,8 @@ CREATE TABLE IF NOT EXISTS files (
     enabled      bool         NOT NULL,
     finished     bool         NOT NULL,
 
+    size         BIGINT       NOT NULL,
+
     creator_id   UUID         NOT NULL,
     creator_type SUBJECT_TYPE NOT NULL,
 
