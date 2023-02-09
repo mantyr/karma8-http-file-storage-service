@@ -10,7 +10,7 @@ type Service struct {
 	HTTP       *HTTP
 	Drivers    Drivers
 	Storages   *storages.Storages
-	Services   *Services
+//	Services   *Services
 	Connectors *connectors.Connectors
 }
 
@@ -19,7 +19,7 @@ func New() (*Service, error) {
 		GRPC:       NewGRPC(),
 		Connectors: &connectors.Connectors{},
 		Storages:   &storages.Storages{},
-		Services:   &Services{},
+//		Services:   &Services{},
 		HTTP:       NewHTTP(),
 	}, nil
 }
