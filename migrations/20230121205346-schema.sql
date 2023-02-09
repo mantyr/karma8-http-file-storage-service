@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS servers (
     host        VARCHAR(1000) NOT NULL,
     port        INTEGER       NOT NULL,
 
+    stored_data_size BIGINT   NOT NULL,
+
     creator_id   UUID         NOT NULL,
     creator_type SUBJECT_TYPE NOT NULL,
 
@@ -46,8 +48,9 @@ CREATE TABLE IF NOT EXISTS files (
     file_id      UUID         NOT NULL,
     file_name    varchar(10000) NOT NULL,
 
-    servers      text[]       NOT NULL,
+    servers      UUID[]       NOT NULL,
     enabled      bool         NOT NULL,
+    finished     bool         NOT NULL,
 
     creator_id   UUID         NOT NULL,
     creator_type SUBJECT_TYPE NOT NULL,

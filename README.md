@@ -267,9 +267,9 @@ karma8 storage --help
             - [ ] реализация
             - [ ] тесты
     - [ ] Слой миграций
-        - [ ] namespaces
-        - [ ] files
-        - [ ] servers
+        - [x] namespaces
+        - [x] files
+        - [x] servers
 - [ ] `karma8 storage`
     - [ ] Функциональность
         - [ ] Получение файла по gRPC
