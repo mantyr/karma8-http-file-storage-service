@@ -31,9 +31,9 @@ func Run(t *testing.T, st namespaces.Storage) {
 
 	namespace := &namespaces.Namespace{
 		NamespaceID: namespaceID,
-		Enabled:  true,
-		Creator:  id.Subject{ID: creatorID, Type: "user"},
-		Updater:  id.Subject{ID: updaterID, Type: "user"},
+		Enabled:     true,
+		Creator:     id.Subject{ID: creatorID, Type: "user"},
+		Updater:     id.Subject{ID: updaterID, Type: "user"},
 	}
 
 	Convey("Добавляем пространство для файлов", func() {

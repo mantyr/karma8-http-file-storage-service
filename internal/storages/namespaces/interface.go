@@ -20,6 +20,9 @@ type Storage interface {
 	// Get возвращает информацию о пространстве
 	Get(id.NamespaceID) (*Namespace, error)
 
+	// List возвращает список зарегистрированных пространств
+	List() (*[]Namespace, error)
+
 	// Enable включает доступ к пространству для пользователей
 	Enable(
 		namespaceID id.NamespaceID,
