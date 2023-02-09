@@ -37,13 +37,14 @@ func (s *Storage) list(
 	var result []servers.Server
 	for _, item := range items {
 		arr := servers.Server{
-			ServerID:  item.ServerID,
-			Host:      item.Host,
-			Port:      item.Port,
-			Creator:   id.Subject{ID: item.CreatorID, Type: item.CreatorType},
-			Updater:   id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},
-			CreatedAt: item.CreatedAt,
-			UpdatedAt: item.UpdatedAt,
+			ServerID:       item.ServerID,
+			Host:           item.Host,
+			Port:           item.Port,
+			StoredDataSize: item.StoredDataSize,
+			Creator:        id.Subject{ID: item.CreatorID, Type: item.CreatorType},
+			Updater:        id.Subject{ID: item.UpdaterID, Type: item.UpdaterType},
+			CreatedAt:      item.CreatedAt,
+			UpdatedAt:      item.UpdatedAt,
 		}
 		result = append(result, arr)
 	}

@@ -18,6 +18,9 @@ type Server struct {
 	// Port по которому отвечает сервер хранения данных
 	Port int `gorm:"column:port"`
 
+	// StoredDataSize это размер данных которые хранятся на сервере
+	StoredDataSize int64 `gorm:"column:stored_data_size"`
+
 	// CreatorID это идентификатор субъекта который создал запись
 	CreatorID id.SubjectID `gorm:"column:creator_id"`
 

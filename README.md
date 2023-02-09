@@ -263,17 +263,17 @@ karma8 storage --help
         - [x] namespaces
         - [x] files
         - [x] servers
-    - [ ] Слой хранения данных
+    - [x] Слой хранения данных
         - [x] namespaces
             - [x] реализация
             - [x] тесты
         - [x] files
             - [x] реализация
             - [x] тесты
-        - [ ] servers
-            - [ ] реализация
-            - [ ] тесты
-    - [ ] Слой миграций
+        - [x] servers
+            - [x] реализация
+            - [x] тесты
+    - [x] Слой миграций
         - [x] namespaces
         - [x] files
         - [x] servers

@@ -22,6 +22,16 @@ type Storage interface {
 	// ListByServerIDs возвращает информацию о наборе серверов хранения файлов
 	ListByServerIDs(...id.ServerID) (*[]Server, error)
 
+	// ListOfLessBusy возвращает наименее загруженные сервера в количестве quantity штук
+	ListOfLessBusy(quantity int) (*[]Server, error)
+
+	// SetStoredDataSize устанавливает значение загруженности сервера
+	SetStoredDataSize(
+		serverID id.ServerID,
+		size int64,
+		updater id.Subject,
+	) error
+
 	// Delete удаляет информацию о сервере хранения файлов
 	Delete(
 		serverID id.ServerID,

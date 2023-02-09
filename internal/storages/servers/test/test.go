@@ -12,6 +12,29 @@ import (
 	. "github.com/smartystreets/goconvey/convey" //nolint:golint,stylecheck
 )
 
+func GenerateServer() *servers.Server {
+	serverID, err := id.GenerateServerID()
+	So(err, ShouldBeNil)
+	So(serverID.IsZero(), ShouldEqual, false)
+
+	creatorID, err := id.GenerateSubjectID()
+	So(err, ShouldBeNil)
+	So(creatorID.IsZero(), ShouldEqual, false)
+
+	updaterID, err := id.GenerateSubjectID()
+	So(err, ShouldBeNil)
+	So(updaterID.IsZero(), ShouldEqual, false)
+	So(updaterID.String(), ShouldNotEqual, creatorID.String())
+
+	return &servers.Server{
+		ServerID: serverID,
+		Host:     "localhost",
+		Port:     9000,
+		Creator:  id.Subject{ID: creatorID, Type: "user"},
+		Updater:  id.Subject{ID: updaterID, Type: "user"},
+	}
+}
+
 func Run(t *testing.T, st servers.Storage) {
 	err := st.Flush(t)
 	So(err, ShouldBeNil)
@@ -75,6 +98,56 @@ func Run(t *testing.T, st servers.Storage) {
 			})
 		})
 	})
+	Convey("Проверяем получение наименее загруженных серверов", func() {
+		items := []*servers.Server{
+			GenerateServer(),
+			GenerateServer(),
+			GenerateServer(),
+			GenerateServer(),
+			GenerateServer(),
+			GenerateServer(),
+			GenerateServer(),
+		}
+		items[0].StoredDataSize = 10008
+		items[1].StoredDataSize = 10001
+		items[2].StoredDataSize = 10002
+		items[3].StoredDataSize = 20002
+		items[4].StoredDataSize = 10003
+		items[5].StoredDataSize = 10000
+		items[6].StoredDataSize = 20000
+		for _, item := range items {
+			err = st.Add(item)
+			So(err, ShouldBeNil)
+		}
+		list, err := st.ListOfLessBusy(4)
+		So(err, ShouldBeNil)
+		So(list, ShouldNotBeNil)
+		So(len(*list), ShouldEqual, 4)
+
+		list2 := *list
+
+		So(list2[0].ServerID.String(), ShouldEqual, items[5].ServerID.String())
+		So(list2[1].ServerID.String(), ShouldEqual, items[1].ServerID.String())
+		So(list2[2].ServerID.String(), ShouldEqual, items[2].ServerID.String())
+		So(list2[3].ServerID.String(), ShouldEqual, items[4].ServerID.String())
+	})
+	Convey("Проверяем обновление размера заполненной памяти", func() {
+		server.StoredDataSize = 10008
+		err = st.Add(server)
+		So(err, ShouldBeNil)
+		item, err := st.Get(server.ServerID)
+		So(err, ShouldBeNil)
+		So(item, ShouldNotBeNil)
+		So(item.StoredDataSize, ShouldEqual, 10008)
+
+		err = st.SetStoredDataSize(server.ServerID, 800, id.Subject{ID: updaterID, Type: subjects.User})
+		So(err, ShouldBeNil)
+
+		item, err = st.Get(server.ServerID)
+		So(err, ShouldBeNil)
+		So(item, ShouldNotBeNil)
+		So(item.StoredDataSize, ShouldEqual, 800)
+	})
 	Convey("Проверяем что нельзя получить не существующий сервер", func() {
 		result, err := st.Get(serverID)
 		So(err, ShouldNotBeNil)
@@ -121,17 +194,20 @@ func checkServers(
 		Convey("ServerID", func() {
 			So(result.ServerID.String(), ShouldEqual, server.ServerID.String())
 		})
-		Convey("CreatorID", func() {
-			So(result.Creator.ID.String(), ShouldEqual, server.Creator.ID.String())
-		})
-		Convey("UpdaterID", func() {
-			So(result.Updater.ID.String(), ShouldEqual, server.Updater.ID.String())
-		})
 		Convey("Host", func() {
 			So(result.Host, ShouldEqual, server.Host)
 		})
 		Convey("Port", func() {
 			So(result.Port, ShouldEqual, server.Port)
+		})
+		Convey("StoredDataSize", func() {
+			So(result.StoredDataSize, ShouldEqual, server.StoredDataSize)
+		})
+		Convey("CreatorID", func() {
+			So(result.Creator.ID.String(), ShouldEqual, server.Creator.ID.String())
+		})
+		Convey("UpdaterID", func() {
+			So(result.Updater.ID.String(), ShouldEqual, server.Updater.ID.String())
 		})
 	})
 }

@@ -18,6 +18,9 @@ type Server struct {
 	// Port это порт по которому отвечает сервер хранения файлов
 	Port int
 
+	// StoredDataSize это размер данных которые хранятся на сервере
+	StoredDataSize int64
+
 	// Creator это информация о субъекте который создал запись
 	Creator id.Subject
 

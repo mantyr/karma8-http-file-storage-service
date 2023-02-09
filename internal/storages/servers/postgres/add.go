@@ -19,14 +19,15 @@ func (s *Storage) Add(server *servers.Server) error {
 		return err
 	}
 	item := &Server{
-		ServerID:    server.ServerID,
-		Host:        server.Host,
-		Port:        server.Port,
-		CreatorID:   server.Creator.ID,
-		CreatorType: server.Creator.Type,
-		UpdaterID:   server.Updater.ID,
-		UpdaterType: server.Updater.Type,
-		CreatedAt:   time.Now(),
+		ServerID:       server.ServerID,
+		Host:           server.Host,
+		Port:           server.Port,
+		StoredDataSize: server.StoredDataSize,
+		CreatorID:      server.Creator.ID,
+		CreatorType:    server.Creator.Type,
+		UpdaterID:      server.Updater.ID,
+		UpdaterType:    server.Updater.Type,
+		CreatedAt:      time.Now(),
 	}
 	item.UpdatedAt = item.CreatedAt
 	err = s.db.Create(item).Error
